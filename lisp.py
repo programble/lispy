@@ -53,12 +53,36 @@ class List(Atom):
         fn = self.car()
         # Evaluate until we get a function
         while not callable(fn):
-            fn = fn.evaluate(scope)
+            try:
+                fn = fn.evaluate(scope)
+            except AttributeError:
+                # Can no longer be evaluated and is still not callable
+                raise TypeError("%s is not callable" % repr(self.car()))
         return fn(scope, *self.cdr().data)
 
     def __repr__(self):
         return "(%s)" % ' '.join([repr(x) for x in self.data])
 
+class String(List):
+    def __init__(self, data=""):
+        List.__init__(self, data)
+
+    def car(self):
+        return Atom(self.data[0])
+
+    def cdr(self):
+        return String(self.data[1:])
+
+    def cons(self, other):
+        return String(other.data + self.data)
+
+    def evaluate(self, scope):
+        # A String evaluates to itself (as if quoted)
+        return self
+
+    def __repr__(self):
+        return repr(self.data)
+    
 class Lambda:
     def __init__(self, names, body):
         self.names = names
@@ -83,5 +107,5 @@ class Lambda:
         return self.body[-1].evaluate(fn_scope)
 
     def evaluate(self, scope):
-        # A lambda evaluates to the function that evaluates it
+        # A lambda evaluates to the function that evaluates it (makes sense, eh?)
         return self.fn
