@@ -43,7 +43,11 @@ global_scope["cdr"] = cdr
 
 def cons(scope, x, y):
     """cons"""
-    return y.evaluate(scope).cons(x.evaluate(scope))
+    if x.__class__ != lisp.Atom:
+        x = x.evaluate(scope)
+    if y.__class__ != lisp.Atom:
+        y = y.evaluate(scope)
+    return y.cons(x)
 global_scope["cons"] = cons
 
 def cond(scope, *x):
