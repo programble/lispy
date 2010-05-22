@@ -68,18 +68,18 @@ def quote(scope, x):
     return x
 global_scope["quote"] = quote
 
-def _def(scope, symbol, x):
+def def_(scope, symbol, x):
     # Can only bind to a symbol
     if symbol.__class__ != lisp.Symbol:
         return nil
     scope[symbol.data] = x.evaluate(scope)
     return scope[symbol.data]
-global_scope["def"] = _def
+global_scope["def"] = def_
 
-def _lambda(scope, names, *body):
+def lambda_(scope, names, *body):
     l = lisp.Lambda(names, body)
     return l
-global_scope["lambda"] = _lambda
+global_scope["lambda"] = lambda_
 
 # Arithmetic functions
 
