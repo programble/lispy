@@ -17,7 +17,7 @@ class Atom:
         return List([other, self])
     
     def evaluate(self, scope):
-        # An atom evaluated to its value
+        # An atom evaluates to its value
         return self.data
         
     def __repr__(self):

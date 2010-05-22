@@ -46,6 +46,8 @@ Usage
 As of yet, there is no complete REPL for Lispy. To run a makeshift
 REPL, run
 
+    ./lispy.py
+or
     python lispy.py
 
 In order to evaluate code, enter an expression at the `=>` prompt and

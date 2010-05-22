@@ -1,6 +1,8 @@
 # Copyright 2010 Curtis (Programble) <programble@gmail.com>
 # Licensed under the GNU GPLv3
 
+# TODO: Make this reader not suck
+
 import string
 from StringIO import StringIO
 

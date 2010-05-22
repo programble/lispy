@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Copyright 2010 Curtis (Programble) <programble@gmail.com>
 # Licensed under the GNU GPLv3
 
