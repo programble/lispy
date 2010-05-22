@@ -109,3 +109,8 @@ class Lambda:
     def evaluate(self, scope):
         # A lambda evaluates to the function that evaluates it (makes sense, eh?)
         return self.fn
+
+class Macro(Lambda):
+    def fn(self, scope, *args):
+        # Re-evaluate the last expression
+        return Lambda.fn(self, scope, *args).evaluate(scope)
