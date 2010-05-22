@@ -41,7 +41,7 @@ class Reader:
                 # Move back one
                 self.prev()
                 exprs.append(self.read_number())
-            elif self.current() == "'":
+            elif self.current() in "'`,":
                 exprs.append(self.read_quote())
             else:
                 # Move back one
@@ -64,7 +64,7 @@ class Reader:
                 # Move back one
                 self.prev()
                 list.append(self.read_number())
-            elif self.current() == "'":
+            elif self.current() in "'`,":
                 list.append(self.read_quote())
             else:
                 # Move back one
@@ -103,7 +103,12 @@ class Reader:
         return Symbol(symbol)
 
     def read_quote(self):
-        expr = [Symbol("quote")]
+        if self.current() == "'":
+            expr = [Symbol("quote")]
+        elif self.current() == '`':
+            expr = [Symbol("backquote")]
+        elif self.current() == ',':
+            expr = [Symbol("unquote")]
         self.next()
         if self.current() == '(':
             expr.append(self.read_list())
