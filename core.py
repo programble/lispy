@@ -16,7 +16,9 @@ nil = global_scope["nil"]
 
 def atom(scope, x):
     """atom(x) is True if x is an Atom"""
-    return x.__class__ == lisp.Atom or x.__class___ == lisp.Symbol
+    if x.__class__ != lisp.Atom:
+        x = x.evaluate(scope)
+    return x.__class__ == lisp.Atom
 global_scope["atom"] = atom
 
 def eq(scope, x, y):

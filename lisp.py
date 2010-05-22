@@ -21,7 +21,7 @@ class Atom:
         return self.data
         
     def __repr__(self):
-        return "<Atom %s>" % repr(self.data)
+        return repr(self.data)
 
 class Symbol(Atom):
     def __init__(self, data):
@@ -31,7 +31,7 @@ class Symbol(Atom):
         return scope[self.data]
 
     def __repr__(self):
-        return "<Symbol %s>" % repr(self.data)
+        return self.data
 
 class List(Atom):
     def __init__(self, data=[]):
@@ -55,7 +55,7 @@ class List(Atom):
         return fn(scope, *self.cdr().data)
 
     def __repr__(self):
-        return "<List %s>" % repr(self.data)
+        return "(%s)" % ' '.join([repr(x) for x in self.data])
 
 class Lambda:
     def __init__(self, names, body):
@@ -76,6 +76,3 @@ class Lambda:
 
     def evaluate(self, scope):
         return self.fn
-
-    def __repr__(self):
-        return "<Lambda %s>" % repr(self.names)
