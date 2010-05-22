@@ -14,10 +14,10 @@ class Atom:
             return False
 
     def cons(self, other):
-        # 
         return List([other, self])
     
     def evaluate(self, scope):
+        # An atom evaluated to its value
         return self.data
         
     def __repr__(self):
@@ -28,6 +28,7 @@ class Symbol(Atom):
         Atom.__init__(self, data)
 
     def evaluate(self, scope):
+        # A symbol evaluates to its binding
         return scope[self.data]
 
     def __repr__(self):
@@ -50,6 +51,7 @@ class List(Atom):
         # A list is evaluated by calling the car as a function with the cdr as arguments
         #return self.car().evaluate(scope)(*[x.evaluate(scope) for x in self.cdr().data])
         fn = self.car()
+        # Evaluate until we get a function
         while not callable(fn):
             fn = fn.evaluate(scope)
         return fn(scope, *self.cdr().data)
@@ -63,16 +65,23 @@ class Lambda:
         self.body = body
 
     def fn(self, scope, *args):
+        # Make sure we have the right amount of args for the amount of names
         if len(args) != len(self.names.data):
             raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))
+        # Create a new local function scope
         fn_scope = Scope(scope)
+        # Bind each arg to a name in the function scope
         for name, value in zip([x.data for x in self.names.data], args):
+            # Evaluate each arg before binding
             if value.__class__ != Atom:
                 value = value.evaluate(scope)
             fn_scope[name] = value
+        # Evaluate each expression in lambda body
         for expression in self.body[:-1]:
             expression.evaluate(fn_scope)
+        # Evaluate last expression and return its result
         return self.body[-1].evaluate(fn_scope)
 
     def evaluate(self, scope):
+        # A lambda evaluates to the function that evaluates it
         return self.fn

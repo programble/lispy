@@ -69,6 +69,7 @@ def quote(scope, x):
 global_scope["quote"] = quote
 
 def _def(scope, symbol, x):
+    # Can only bind to a symbol
     if symbol.__class__ != lisp.Symbol:
         return nil
     scope[symbol.data] = x.evaluate(scope)
@@ -124,5 +125,3 @@ def div(scope, *x):
         ret /= i.evaluate(scope)
     return lisp.Atom(ret)
 global_scope["/"] = div
-
-
