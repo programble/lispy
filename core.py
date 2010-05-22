@@ -72,7 +72,9 @@ def def_(scope, symbol, x):
     # Can only bind to a symbol
     if symbol.__class__ != lisp.Symbol:
         return nil
-    scope[symbol.data] = x.evaluate(scope)
+    if x.__class__ != lisp.Atom:
+        x = x.evaluate(scope)
+    scope[symbol.data] = x
     return scope[symbol.data]
 global_scope["def"] = def_
 
