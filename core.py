@@ -81,6 +81,22 @@ def _lambda(scope, names, *body):
     return l
 global_scope["lambda"] = _lambda
 
+def backquote(scope, expr):
+    if expr.__class__ != lisp.List:
+        return expr
+    new = []
+    for x in expr.data:
+        if x.__class__ == lisp.List:
+            # Evaluate only unquoted items
+            if x.car() == lisp.Symbol("unquote"):
+                new.append(x.cdr().car().evaluate(scope))
+            else:
+                new.append(x)
+        else:
+            new.append(x)
+    return lisp.List(new)
+global_scope["backquote"] = backquote
+
 # Arithmetic functions
 
 def add(scope, *x):
