@@ -81,16 +81,3 @@ class Reader:
                 token += x
             return token
 
-source = """
-(def double (lambda (x)
-  (* x 2)))
-(double 3)
-(double (double 4))
-"""
-
-x = Reader(source)
-code =  x.read()
-import core
-for expr in code:
-    print expr
-    print "=>", expr.evaluate(core.global_scope)
