@@ -115,6 +115,22 @@ def macroexpand(scope, expr):
     return lisp.Lambda.fn(m, scope, *expr.cdr().data)
 global_scope["macroexpand"] = macroexpand
 
+def let(scope, bindings, *exprs):
+    # Create a new scope
+    local_scope = Scope(scope)
+    # Bind each pair in bindings
+    for pair in bindings.data:
+        x = pair.cdr().car()
+        if x.__class__ != lisp.Atom:
+            x = x.evaluate(local_scope)
+        local_scope[pair.car().data] = x
+    # Evaluate each expr in local scope
+    for expr in exprs[:-1]:
+        expr.evaluate(local_scope)
+    # Return the result of the last expr
+    return exprs[-1].evaluate(local_scope)
+global_scope["let"] = let
+
 # Arithmetic functions
 
 def add(scope, *x):
