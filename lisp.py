@@ -112,5 +112,17 @@ class Lambda:
 
 class Macro(Lambda):
     def fn(self, scope, *args):
-        # Re-evaluate the last expression
-        return Lambda.fn(self, scope, *args).evaluate(scope)
+        # Make sure we have the right amount of args for the amount of names
+        if len(args) != len(self.names.data):
+            raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))
+        # Create a new local function scope
+        fn_scope = Scope(scope)
+        # Bind each arg to a name in the function scope
+        for name, value in zip([x.data for x in self.names.data], args):
+            # Do not evaluate each arg before binding
+            fn_scope[name] = value
+        # Evaluate each expression in lambda body
+        for expression in self.body[:-1]:
+            expression.evaluate(fn_scope)
+        # Evaluate last expression, then evaluate it again in the outer scope
+        return self.body[-1].evaluate(fn_scope).evaluate(scope)
