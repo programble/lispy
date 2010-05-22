@@ -7,9 +7,9 @@ import lisp
 global_scope = Scope()
 
 # Core bindings
-global_scope["t"] = lisp.Atom(True)
+global_scope["t"] = lisp.Symbol("t")
 t = global_scope["t"]
-global_scope["nil"] = lisp.List()
+global_scope["nil"] = lisp.Symbol("nil")
 nil = global_scope["nil"]
 
 # Core functions

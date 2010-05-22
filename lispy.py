@@ -14,6 +14,7 @@ while True:
         print e
     for expr in exprs:
         try:
-            print expr.evaluate(core.global_scope)
+            x = expr.evaluate(core.global_scope)
+            print x
         except Exception, e:
             print e
