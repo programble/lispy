@@ -75,6 +75,8 @@ class Reader:
         else:
             while True:
                 x = self.stream.read(1)
+                if x == '':
+                    break
                 if x in string.whitespace or x == ")":
                     self.stream.seek(-1, 1)
                     break
