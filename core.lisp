@@ -25,9 +25,27 @@
 
 ;; More normal flow control
 (defmacro if (p x y) `(cond (,p ,x) (t ,y)))
+;(defmacro when (p & b) `(if ,p (do ,@b) nil))
+
+;; Append
+(defun append (x y)
+  (if (nil? x)
+    y
+    (cons (car x) (append (cdr x) y))))
 
 ;; Reduce, one of the great FP functions
 (defun reduce (f l)
   (if (nil? l)
     (f)
     (f (car l) (reduce f (cdr l)))))
+
+;; Filter
+(defun filter (f l)
+  (if (nil? l)
+    l
+    (if (f (car l))
+      (append (car l) (filter f (cdr l)))
+      (filter f (cdr l)))))
+
+;; Apply
+;(defmacro apply (f l) `(,f ,@l))
