@@ -128,6 +128,10 @@ global_scope["macro"] = macro
 
 # Other core functions
 
+def list_(scope, *x):
+    return lisp.List([i.evaluate(scope) for i in x])
+global_scope["list"] = list_
+
 def let(scope, bindings, *exprs):
     """Creates a new scope with bindings and evaluates expressions in that scope, returning the result of the last expression"""
     # Create a new scope
