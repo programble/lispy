@@ -45,6 +45,15 @@ class Reader:
                 # Move back one
                 self.prev()
                 exprs.append(self.read_number())
+            elif self.current() == '-':
+                if self.next() in string.digits:
+                    self.prev()
+                    self.prev()
+                    exprs.append(self.read_number())
+                else:
+                    self.prev()
+                    self.prev()
+                    exprs.append(self.read_symbol())
             elif self.current() in "'`,":
                 exprs.append(self.read_quote())
             else:
@@ -68,6 +77,15 @@ class Reader:
                 # Move back one
                 self.prev()
                 list.append(self.read_number())
+            elif self.current() == '-':
+                if self.next() in string.digits:
+                    self.prev()
+                    self.prev()
+                    list.append(self.read_number())
+                else:
+                    self.prev()
+                    self.prev()
+                    list.append(self.read_symbol())
             elif self.current() in "'`,":
                 list.append(self.read_quote())
             else:
