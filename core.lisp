@@ -72,7 +72,7 @@
 ;; Apply
 ;(defmacro apply (f l) `(,f ,@l))
 
-;; Range (Lisp implementation)
+;; Range
 (defun range- (x)
   (if (zero? x)
     nil

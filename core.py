@@ -210,7 +210,10 @@ global_scope[">"] = gt
 
 # Other functions
 
-#def range_(scope, 
+def range_(scope, x):
+    """Returns a list of numbers from 0 to x - 1"""
+    return lisp.List([lisp.Atom(i) for i in range(x.evaluate(scope).data)])
+global_scope["range"] = range_
 
 # Misc. Functions
 def time_(scope, x):
