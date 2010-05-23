@@ -17,6 +17,7 @@
 ;; Comparison operators
 (defmacro <= (x y) `(or (= ,x ,y) (< ,x ,y)))
 (defmacro >= (x y) `(or (= ,x ,y) (> ,x ,y)))
+(defmacro != (x y) `(not (= ,x ,y)))
 
 ;; Common List Functions
 (defmacro caar (x) `(car (car ,x)))
