@@ -2,7 +2,9 @@
 
 ;; Define Macros
 (def defmacro (macro (n a b) `(def ,n (macro ,a ,b))))
-(defmacro defun (n a b) `(def ,n (fn ,a ,b)))
+;(def defmacro (macro (n a & b) `(def ,n (macro ,a ,@b))))
+(defmacro defun (n a b) `(def ,n (lambda ,a ,b)))
+;(defmacro defun (n a & b) `(def ,n (lambda ,a ,@b)))
 (def defn defun)
 
 ;; Logical operators
@@ -12,7 +14,11 @@
 (defmacro or (x y) `(nand (nand ,x ,x) (nand ,y ,y)))
 (defmacro xor (x y) `(or (and ,x (not ,y)) (and (not ,x) ,y)))
 
-;; Common Functions
+;; Comparison operators
+(defmacro <= (x y) `(or (= ,x ,y) (< ,x ,y)))
+(defmacro >= (x y) `(or (= ,x ,y) (> ,x ,y)))
+
+;; Common List Functions
 (defmacro caar (x) `(car (car ,x)))
 (defmacro cadr (x) `(car (cdr ,x)))
 (defmacro caddr (x) `(car (cdr (cdr ,x))))

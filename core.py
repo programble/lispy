@@ -213,3 +213,27 @@ def div(scope, *x):
             b = b.evaluate(scope)
         return div(scope, lisp.Atom(a.evaluate(scope) / b.evaluate(scope)), *x[2:])
 global_scope["/"] = div
+
+# Comparison Operators
+
+def lt(scope, x, y):
+    if x.__class__ != lisp.Atom:
+        x = x.evaluate(scope)
+    if y.__class__ != lisp.Atom:
+        y = y.evaluate(scope)
+    if x.evaluate(scope) < y.evaluate(scope):
+        return t
+    else:
+        return nil
+global_scope["<"] = lt
+
+def gt(scope, x, y):
+    if x.__class__ != lisp.Atom:
+        x = x.evaluate(scope)
+    if y.__class__ != lisp.Atom:
+        y = y.evaluate(scope)
+    if x.evaluate(scope) > y.evaluate(scope):
+        return t
+    else:
+        return nil
+global_scope[">"] = gt
