@@ -1,10 +1,11 @@
 Lispy
 =====
 
-Lispy is a Lisp implementation in Python based on John McCarthy's
-paper "Recursive Functions of Symbolic Expressions and Their
-Computation by Machine, Part I", which can be found
-[here](http://www-formal.stanford.edu/jmc/recursive/).
+Lispy is a Lisp implementation in Python. It is based on John
+McCarthy's paper "Recursive Functions of Symbolic Expressions and
+Their Computation by Machine, Part I", which can be found
+[here](http://www-formal.stanford.edu/jmc/recursive/); Common Lisp and
+Clojure.
 
 Some code is based on [fogus](http://github.com/fogus/)'s
 [lithp](http://github.com/fogus/lithp).
@@ -28,17 +29,11 @@ Lispy also implements the two special forms:
 1. `def`
 2. `lambda`
 
-As of now, Lispy also includes the basic arithmetic operators:
+Lispy also implements the four arithmetic operators and the `let`
+special form.
 
- * `+`
- * `-`
- * `*`
- * `/`
-
-Lispy also binds two extra symbols in the global scope:
-
- * `t`
- * `nil`
+Lispy implements a macro system using the `macro` special form and the
+`backquote` special form along with `unquote`.
 
 Usage
 -----

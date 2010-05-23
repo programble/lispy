@@ -5,6 +5,8 @@
 from reader import Reader
 import core
 
+import traceback
+
 while True:
     source = raw_input("=> ")
     reader = Reader(source)
@@ -17,4 +19,4 @@ while True:
             x = expr.evaluate(core.global_scope)
             print x
         except Exception, e:
-            print e
+            traceback.print_exc()

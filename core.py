@@ -4,56 +4,67 @@
 from scope import Scope
 import lisp
 
+# Global scope (This is where the entire core goes)
 global_scope = Scope()
 
-# Core bindings
-global_scope["t"] = lisp.Symbol("t")
-t = global_scope["t"]
-global_scope["nil"] = lisp.Symbol("nil")
-nil = global_scope["nil"]
+# Standard core bindings
+t = lisp.Symbol("t")
+global_scope["t"] = t
+nil = lisp.Symbol("nil")
+global_scope["nil"] = nil
 
-# Core functions
+# Core functions (from McCarthy's paper)
 
 def atom(scope, x):
-    """atom(x) is True if x is an Atom"""
+    """Returns t if x is atomic"""
+    # Evaluate x if need be (could be a symbol)
     if x.__class__ != lisp.Atom:
         x = x.evaluate(scope)
-    return x.__class__ == lisp.Atom
+    
+    if x.__class__ == lisp.Atom:
+        return t
+    else:
+        return nil
 global_scope["atom"] = atom
 
 def eq(scope, x, y):
-    """eq(x, y) is True is x and y are equal"""
+    """Returns t if x and y are equal"""
+    # First evaluate arguments
     if x.__class__ != lisp.Atom:
         x = x.evaluate(scope)
     if y.__class__ != lisp.Atom:
         y = y.evaluate(scope)
+    
     if x == y:
         return t
     else:
         return nil
 global_scope["eq"] = eq
+global_scope["="] = eq
 
 def car(scope, x):
-    """car(x) is the first item of x if x is non-atomic"""
+    """Returns the first item (car) of list x"""
     return x.evaluate(scope).car()
 global_scope["car"] = car
 
 def cdr(scope, x):
-    """cdr(x) is the rest of x if x is non-atomic"""
+    """Returns the tail (cdr) of list x"""
     return x.evaluate(scope).cdr()
 global_scope["cdr"] = cdr
 
 def cons(scope, x, y):
-    """cons"""
+    """Joins y and x"""
+    # First evaluate arguments
     if x.__class__ != lisp.Atom:
         x = x.evaluate(scope)
     if y.__class__ != lisp.Atom:
         y = y.evaluate(scope)
+    
     return y.cons(x)
 global_scope["cons"] = cons
 
 def cond(scope, *x):
-    """cond"""
+    """For each expression, if the car evaluates to t, the cdr is evaluated and its result returned"""
     for test in x:
         if test.car().evaluate(scope) == t:
             ret = test.cdr().car()
@@ -64,26 +75,36 @@ def cond(scope, *x):
 global_scope["cond"] = cond
 
 def quote(scope, x):
-    """quote"""
+    """Returns its argument"""
     return x
 global_scope["quote"] = quote
+
+# Special Forms (from McCarthy's paper)
 
 def def_(scope, symbol, x):
     # Can only bind to a symbol
     if symbol.__class__ != lisp.Symbol:
         return nil
+    # Evaluate value
     if x.__class__ != lisp.Atom:
         x = x.evaluate(scope)
+    # Bind in current scope
     scope[symbol.data] = x
     return scope[symbol.data]
 global_scope["def"] = def_
 
 def lambda_(scope, names, *body):
+    """Returns a new lambda"""
     l = lisp.Lambda(names, body)
     return l
 global_scope["lambda"] = lambda_
+global_scope["fn"] = lambda_
+
+# Macro Functions
 
 def backquote(scope, expr):
+    """Returns a new list with only the unquoted items evaluated"""
+    # Cannot backquote a non-list
     if expr.__class__ != lisp.List:
         return expr
     new = []
@@ -100,22 +121,15 @@ def backquote(scope, expr):
 global_scope["backquote"] = backquote
 
 def macro(scope, names, *body):
+    """Returns a new macro"""
     m = lisp.Macro(names, body)
     return m
 global_scope["macro"] = macro
 
-def macroexpand(scope, expr):
-    if expr.__class__ != lisp.List:
-        return expr
-    if expr.car().__class__ != lisp.Symbol:
-        return expr
-    m = expr.car().evaluate(scope)
-    if m.__class__ != lisp.Macro:
-        return expr
-    return lisp.Lambda.fn(m, scope, *expr.cdr().data)
-global_scope["macroexpand"] = macroexpand
+# Other core functions
 
 def let(scope, bindings, *exprs):
+    """Creates a new scope with bindings and evaluates expressions in that scope, returning the result of the last expression"""
     # Create a new scope
     local_scope = Scope(scope)
     # Bind each pair in bindings
@@ -134,44 +148,61 @@ global_scope["let"] = let
 # Arithmetic functions
 
 def add(scope, *x):
-    ret = 0
-    for i in x:
-        if i.__class__ != lisp.Atom:
-            i = i.evaluate(scope)
-        ret += i.evaluate(scope)
-    return lisp.Atom(ret)
+    if len(x) == 0:
+        return 0
+    if len(x) == 1:
+        return x[0]
+    else:
+        a = x[0]
+        if a.__class__ != lisp.Atom:
+            a = a.evaluate(scope)
+        b = x[1]
+        if b.__class__ != lisp.Atom:
+            b = b.evaluate(scope)
+        return add(scope, lisp.Atom(a.evaluate(scope) + b.evaluate(scope)), *x[2:])
 global_scope["+"] = add
 
 def sub(scope, *x):
-    ret = 0
-    for i in x:
-        if i.__class__ != lisp.Atom:
-            i = i.evaluate(scope)
-        ret -= i.evaluate(scope)
-    return lisp.Atom(ret)
+    if len(x) == 0:
+        return 0
+    if len(x) == 1:
+        return x[0]
+    else:
+        a = x[0]
+        if a.__class__ != lisp.Atom:
+            a = a.evaluate(scope)
+        b = x[1]
+        if b.__class__ != lisp.Atom:
+            b = b.evaluate(scope)
+        return sub(scope, lisp.Atom(a.evaluate(scope) - b.evaluate(scope)), *x[2:])
 global_scope["-"] = sub
 
 def mul(scope, *x):
-    ret = 1
-    for i in x:
-        if i.__class__ != lisp.Atom:
-            i = i.evaluate(scope)
-        ret *= i.evaluate(scope)
-    return lisp.Atom(ret)
+    if len(x) == 0:
+        return 1
+    if len(x) == 1:
+        return x[0]
+    else:
+        a = x[0]
+        if a.__class__ != lisp.Atom:
+            a = a.evaluate(scope)
+        b = x[1]
+        if b.__class__ != lisp.Atom:
+            b = b.evaluate(scope)
+        return mul(scope, lisp.Atom(a.evaluate(scope) * b.evaluate(scope)), *x[2:])
 global_scope["*"] = mul
 
 def div(scope, *x):
+    if len(x) == 0:
+        return 0
     if len(x) == 1:
-        x = x[0]
-        if x.__class__ != lisp.Atom:
-            x = x.evaluate(scope)
-        return 1 / x.evaluate(scope)
-    if x[0].__class__ != lisp.Atom:
-        x[0] = x[0].evaluate(scope)
-    ret = x[0]
-    for i in x[1:]:
-        if i.__class__ != lisp.Atom:
-            i = i.evaluate(scope)
-        ret /= i.evaluate(scope)
-    return lisp.Atom(ret)
+        return x[0]
+    else:
+        a = x[0]
+        if a.__class__ != lisp.Atom:
+            a = a.evaluate(scope)
+        b = x[1]
+        if b.__class__ != lisp.Atom:
+            b = b.evaluate(scope)
+        return div(scope, lisp.Atom(a.evaluate(scope) / b.evaluate(scope)), *x[2:])
 global_scope["/"] = div
