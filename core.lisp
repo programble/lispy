@@ -55,18 +55,18 @@
     (cons (car x) (append (cdr x) y))))
 
 ;; Reduce, one of the great FP functions
-(defun reduce (f l)
-  (if (nil? l)
-    (f)
-    (f (car l) (reduce f (cdr l)))))
+(defun reduce (f i xs)
+  (if (nil? (cdr xs))
+    (f i (car xs))
+    (reduce f (f i (car xs)) (cdr xs))))
 
 ;; Filter
-(defun filter (f l)
-  (if (nil? l)
-    l
-    (if (f (car l))
-      (append (car l) (filter f (cdr l)))
-      (filter f (cdr l)))))
+(defun filter (p xs)
+  (if (nil? xs)
+    xs
+    (if (p (car xs))
+      (cons (car xs) (filter p (cdr xs)))
+      (filter p (cdr xs)))))
 
 ;; Apply
 ;(defmacro apply (f l) `(,f ,@l))

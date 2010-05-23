@@ -18,7 +18,8 @@ class Atom:
     
     def evaluate(self, scope):
         # An atom evaluates to its value
-        return self.data
+        #return self.data
+        return self
         
     def __repr__(self):
         return repr(self.data)
@@ -39,10 +40,14 @@ class List(Atom):
         Atom.__init__(self, data)
 
     def car(self):
-        return self.data[0]
+        if len(self.data) == 0:
+            return List()
+        x = self.data[0]
+        return x
 
     def cdr(self):
         return List(self.data[1:])
+        #return List([Symbol("quote"), List(self.data[1:])])
 
     def cons(self, other):
         return List([other] + self.data)
@@ -52,12 +57,13 @@ class List(Atom):
         #return self.car().evaluate(scope)(*[x.evaluate(scope) for x in self.cdr().data])
         fn = self.car()
         # Evaluate until we get a function
-        while not callable(fn):
-            try:
-                fn = fn.evaluate(scope)
-            except AttributeError:
-                # Can no longer be evaluated and is still not callable
-                raise TypeError("%s is not callable" % repr(self.car()))
+        #while not callable(fn):
+        #    try:
+        #        fn = fn.evaluate(scope)
+        #    except AttributeError:
+        #        # Can no longer be evaluated and is still not callable
+        #        raise TypeError("%s is not callable" % repr(self.car()))
+        fn = fn.evaluate(scope)
         return fn(scope, *self.cdr().data)
 
     def __repr__(self):
@@ -88,7 +94,7 @@ class Lambda:
         self.names = names
         self.body = body
 
-    def fn(self, scope, *args):
+    def __call__(self, scope, *args):
         # Make sure we have the right amount of args for the amount of names
         if len(args) != len(self.names.data):
             raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))
@@ -107,11 +113,11 @@ class Lambda:
         return self.body[-1].evaluate(fn_scope)
 
     def evaluate(self, scope):
-        # A lambda evaluates to the function that evaluates it (makes sense, eh?)
-        return self.fn
+        # A lambda evaluates to itself
+        return self
 
 class Macro(Lambda):
-    def fn(self, scope, *args):
+    def __call__(self, scope, *args):
         # Make sure we have the right amount of args for the amount of names
         if len(args) != len(self.names.data):
             raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))

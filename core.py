@@ -166,7 +166,7 @@ def add(scope, *x):
         b = x[1]
         if b.__class__ != lisp.Atom:
             b = b.evaluate(scope)
-        return add(scope, lisp.Atom(a.evaluate(scope) + b.evaluate(scope)), *x[2:])
+        return add(scope, lisp.Atom(a.data + b.data), *x[2:])
 global_scope["+"] = add
 
 def sub(scope, *x):
@@ -181,7 +181,7 @@ def sub(scope, *x):
         b = x[1]
         if b.__class__ != lisp.Atom:
             b = b.evaluate(scope)
-        return sub(scope, lisp.Atom(a.evaluate(scope) - b.evaluate(scope)), *x[2:])
+        return sub(scope, lisp.Atom(a.data - b.data), *x[2:])
 global_scope["-"] = sub
 
 def mul(scope, *x):
@@ -196,7 +196,7 @@ def mul(scope, *x):
         b = x[1]
         if b.__class__ != lisp.Atom:
             b = b.evaluate(scope)
-        return mul(scope, lisp.Atom(a.evaluate(scope) * b.evaluate(scope)), *x[2:])
+        return mul(scope, lisp.Atom(a.data * b.data), *x[2:])
 global_scope["*"] = mul
 
 def div(scope, *x):
@@ -211,7 +211,7 @@ def div(scope, *x):
         b = x[1]
         if b.__class__ != lisp.Atom:
             b = b.evaluate(scope)
-        return div(scope, lisp.Atom(a.evaluate(scope) / b.evaluate(scope)), *x[2:])
+        return div(scope, lisp.Atom(a.data / b.data), *x[2:])
 global_scope["/"] = div
 
 def mod(scope, x, y):
@@ -219,7 +219,7 @@ def mod(scope, x, y):
         x = x.evaluate(scope)
     if y.__class__ != lisp.Atom:
         y = y.evaluate(scope)
-    return lisp.Atom(x.evaluate(scope) % y.evaluate(scope))
+    return lisp.Atom(x.data % y.data)
 global_scope["%"] = mod
 
 # Comparison Operators
@@ -229,7 +229,7 @@ def lt(scope, x, y):
         x = x.evaluate(scope)
     if y.__class__ != lisp.Atom:
         y = y.evaluate(scope)
-    if x.evaluate(scope) < y.evaluate(scope):
+    if x.data < y.data:
         return t
     else:
         return nil
@@ -240,8 +240,17 @@ def gt(scope, x, y):
         x = x.evaluate(scope)
     if y.__class__ != lisp.Atom:
         y = y.evaluate(scope)
-    if x.evaluate(scope) > y.evaluate(scope):
+    if x.data > y.data:
         return t
     else:
         return nil
 global_scope[">"] = gt
+
+# Misc. Functions
+def time_(scope, x):
+    import time
+    s = time.time()
+    x.evaluate(scope)
+    s = time.time() - s
+    return lisp.Atom(s)
+global_scope["time"] = time_
