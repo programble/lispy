@@ -29,6 +29,21 @@
 (defun nil? (x)
   (or (= x '()) (= x nil)))
 
+(defun even? (x)
+  (= (% x 2) 0))
+
+(defun odd? (x)
+  (not (even? x)))
+
+(defun zero? (x)
+  (= x 0))
+
+(defun pos? (x)
+  (> x 0))
+
+(defun neg? (x)
+  (< x 0))
+
 ;; More normal flow control
 (defmacro if (p x y) `(cond (,p ,x) (t ,y)))
 ;(defmacro when (p & b) `(if ,p (do ,@b) nil))

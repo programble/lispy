@@ -214,6 +214,14 @@ def div(scope, *x):
         return div(scope, lisp.Atom(a.evaluate(scope) / b.evaluate(scope)), *x[2:])
 global_scope["/"] = div
 
+def mod(scope, x, y):
+    if x.__class__ != lisp.Atom:
+        x = x.evaluate(scope)
+    if y.__class__ != lisp.Atom:
+        y = y.evaluate(scope)
+    return lisp.Atom(x.evaluate(scope) % y.evaluate(scope))
+global_scope["%"] = mod
+
 # Comparison Operators
 
 def lt(scope, x, y):
