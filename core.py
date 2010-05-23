@@ -1,6 +1,8 @@
 # Copyright 2010 Curtis (Programble) <programble@gmail.com>
 # Licensed under the GNU GPLv3
 
+import sys
+
 from scope import Scope
 import lisp
 
@@ -12,6 +14,10 @@ t = lisp.Symbol("t")
 global_scope["t"] = t
 nil = lisp.Symbol("nil")
 global_scope["nil"] = nil
+
+# Lispy Information
+global_scope["*lispy-version*"] = lisp.List([lisp.Atom(0), lisp.Atom(1), lisp.Atom(0)])
+global_scope["*lispy-platform*"] = lisp.String(sys.platform)
 
 # Core functions (from McCarthy's paper)
 
