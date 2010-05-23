@@ -17,8 +17,7 @@ class Atom:
         return List([other, self])
     
     def evaluate(self, scope):
-        # An atom evaluates to its value
-        #return self.data
+        # An atom evaluates to itself
         return self
         
     def __repr__(self):
@@ -47,22 +46,13 @@ class List(Atom):
 
     def cdr(self):
         return List(self.data[1:])
-        #return List([Symbol("quote"), List(self.data[1:])])
 
     def cons(self, other):
         return List([other] + self.data)
     
     def evaluate(self, scope):
         # A list is evaluated by calling the car as a function with the cdr as arguments
-        #return self.car().evaluate(scope)(*[x.evaluate(scope) for x in self.cdr().data])
         fn = self.car()
-        # Evaluate until we get a function
-        #while not callable(fn):
-        #    try:
-        #        fn = fn.evaluate(scope)
-        #    except AttributeError:
-        #        # Can no longer be evaluated and is still not callable
-        #        raise TypeError("%s is not callable" % repr(self.car()))
         fn = fn.evaluate(scope)
         return fn(scope, *self.cdr().data)
 
