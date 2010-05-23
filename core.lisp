@@ -68,5 +68,10 @@
       (cons (car xs) (filter p (cdr xs)))
       (filter p (cdr xs)))))
 
+(defun identity (x) x)
+
+(defun contains? (ele coll)
+  (reduce (lambda (acc x) (if (= x ele) t nil)) (car coll) coll))
+
 ;; Apply
 ;(defmacro apply (f l) `(,f ,@l))
