@@ -78,8 +78,8 @@ def def_(scope, symbol, x):
         return nil
     # Evaluate value
     x = x.evaluate(scope)
-    # Bind in current scope
-    scope[symbol.data] = x
+    # Bind in global scope
+    global_scope[symbol.data] = x
     return scope[symbol.data]
 global_scope["def"] = def_
 
