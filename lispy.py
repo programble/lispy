@@ -7,6 +7,13 @@ import core
 
 import traceback
 
+# Load up and evaluate core.lisp
+f = open("core.lisp")
+reader = Reader(f.read())
+f.close()
+for expr in reader.read():
+    expr.evaluate(core.global_scope)
+
 while True:
     source = raw_input("=> ")
     reader = Reader(source)

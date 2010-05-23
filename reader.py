@@ -31,6 +31,10 @@ class Reader:
             if self.current() in string.whitespace:
                 # Skip over whitespace
                 continue
+            elif self.current() == ';':
+                # Comment, skip to end of line
+                while self.next() != '\n':
+                    pass
             elif self.current() == '(':
                 exprs.append(self.read_list())
             elif self.current() == ')':

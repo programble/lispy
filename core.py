@@ -145,6 +145,13 @@ def let(scope, bindings, *exprs):
     return exprs[-1].evaluate(local_scope)
 global_scope["let"] = let
 
+def do(scope, *exprs):
+    """Evaluates each expression and returns the result of the last"""
+    for expr in exprs[:-1]:
+        expr.evaluate(scope)
+    return exprs[-1].evaluate(scope)
+global_scope["do"] = do
+
 # Arithmetic functions
 
 def add(scope, *x):
