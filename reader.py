@@ -14,7 +14,7 @@ class Reader:
         try:
             return self.source[self.index]
         except IndexError:
-            raise SyntaxError("unexpected EOF")
+            raise EOFError("unexpected EOF")
 
     def next(self):
         self.index += 1
