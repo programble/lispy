@@ -17,6 +17,7 @@
 ;; Comparison operators
 (defmacro <= (x y) `(or (= ,x ,y) (< ,x ,y)))
 (defmacro >= (x y) `(or (= ,x ,y) (> ,x ,y)))
+(defmacro != (x y) `(not (= ,x ,y)))
 
 ;; Common List Functions
 (defmacro caar (x) `(car (car ,x)))
@@ -51,7 +52,7 @@
 ;; Append
 (defun append (x y)
   (if (nil? x)
-    y
+    (list y)
     (cons (car x) (append (cdr x) y))))
 
 ;; Reduce, one of the great FP functions
@@ -75,3 +76,9 @@
 
 ;; Apply
 ;(defmacro apply (f l) `(,f ,@l))
+
+;; Range
+(defun range- (x)
+  (if (zero? x)
+    nil
+    (append (range- (- x 1)) (- x 1))))

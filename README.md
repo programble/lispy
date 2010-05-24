@@ -13,27 +13,7 @@ Some code is based on [fogus](http://github.com/fogus/)'s
 Features
 --------
 
-Lispy implements all seven core functions discussed in McCarthy's
-paper:
-
-1. `atom`
-2. `eq`
-3. `car`
-4. `cdr`
-5. `cons`
-6. `cond`
-7. `quote`
-
-Lispy also implements the two special forms:
-
-1. `def`
-2. `lambda`
-
-Lispy also implements the four arithmetic operators and the `let`
-special form.
-
-Lispy implements a macro system using the `macro` special form and the
-`backquote` special form along with `unquote`.
+Many.
 
 Usage
 -----

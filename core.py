@@ -1,6 +1,8 @@
 # Copyright 2010 Curtis (Programble) <programble@gmail.com>
 # Licensed under the GNU GPLv3
 
+import sys
+
 from scope import Scope
 import lisp
 
@@ -13,13 +15,15 @@ global_scope["t"] = t
 nil = lisp.Symbol("nil")
 global_scope["nil"] = nil
 
+# Lispy Information
+global_scope["*lispy-version*"] = lisp.List([lisp.Atom(0), lisp.Atom(1), lisp.Atom(0)])
+global_scope["*lispy-platform*"] = lisp.String(sys.platform)
+
 # Core functions (from McCarthy's paper)
 
 def atom(scope, x):
     """Returns t if x is atomic"""
-    # Evaluate x if need be (could be a symbol)
-    if x.__class__ != lisp.Atom:
-        x = x.evaluate(scope)
+    x = x.evaluate(scope)
     
     if x.__class__ == lisp.Atom:
         return t
@@ -30,10 +34,8 @@ global_scope["atom"] = atom
 def eq(scope, x, y):
     """Returns t if x and y are equal"""
     # First evaluate arguments
-    if x.__class__ != lisp.Atom:
-        x = x.evaluate(scope)
-    if y.__class__ != lisp.Atom:
-        y = y.evaluate(scope)
+    x = x.evaluate(scope)
+    y = y.evaluate(scope)
     
     if x == y:
         return t
@@ -55,10 +57,8 @@ global_scope["cdr"] = cdr
 def cons(scope, x, y):
     """Joins y and x"""
     # First evaluate arguments
-    if x.__class__ != lisp.Atom:
-        x = x.evaluate(scope)
-    if y.__class__ != lisp.Atom:
-        y = y.evaluate(scope)
+    x = x.evaluate(scope)
+    y = y.evaluate(scope)
     
     return y.cons(x)
 global_scope["cons"] = cons
@@ -67,10 +67,7 @@ def cond(scope, *x):
     """For each expression, if the car evaluates to t, the cdr is evaluated and its result returned"""
     for test in x:
         if test.car().evaluate(scope) == t:
-            ret = test.cdr().car()
-            if ret.__class__ != lisp.Atom:
-                ret = ret.evaluate(scope)
-            return ret
+            return test.cdr().car().evaluate(scope)
     return nil
 global_scope["cond"] = cond
 
@@ -86,10 +83,9 @@ def def_(scope, symbol, x):
     if symbol.__class__ != lisp.Symbol:
         return nil
     # Evaluate value
-    if x.__class__ != lisp.Atom:
-        x = x.evaluate(scope)
-    # Bind in current scope
-    scope[symbol.data] = x
+    x = x.evaluate(scope)
+    # Bind in global scope
+    global_scope[symbol.data] = x
     return scope[symbol.data]
 global_scope["def"] = def_
 
@@ -128,16 +124,18 @@ global_scope["macro"] = macro
 
 # Other core functions
 
+def list_(scope, *x):
+    """Evaluates all arguments then returns a List of them"""
+    return lisp.List([i.evaluate(scope) for i in x])
+global_scope["list"] = list_
+
 def let(scope, bindings, *exprs):
     """Creates a new scope with bindings and evaluates expressions in that scope, returning the result of the last expression"""
     # Create a new scope
     local_scope = Scope(scope)
     # Bind each pair in bindings
     for pair in bindings.data:
-        x = pair.cdr().car()
-        if x.__class__ != lisp.Atom:
-            x = x.evaluate(local_scope)
-        local_scope[pair.car().data] = x
+        local_scope[pair.car().data] = pair.cdr().car().evaluate(local_scope)
     # Evaluate each expr in local scope
     for expr in exprs[:-1]:
         expr.evaluate(local_scope)
@@ -152,6 +150,21 @@ def do(scope, *exprs):
     return exprs[-1].evaluate(scope)
 global_scope["do"] = do
 
+def dolist(scope, nl, *exprs):
+    """Evaluates each expression for each item in the list"""
+    ret = nil
+    # Create new local scope
+    local_scope = Scope(scope)
+    # Evaluate the list
+    l = nl.cdr().car().evaluate(scope)
+    for i in l.data:
+        # Bind this item to the name
+        local_scope[nl.car().data] = i.evaluate(scope)
+        for expr in exprs:
+            ret = expr.evaluate(local_scope)
+    return ret
+global_scope["dolist"] = dolist
+
 # Arithmetic functions
 
 def add(scope, *x):
@@ -160,13 +173,7 @@ def add(scope, *x):
     if len(x) == 1:
         return x[0]
     else:
-        a = x[0]
-        if a.__class__ != lisp.Atom:
-            a = a.evaluate(scope)
-        b = x[1]
-        if b.__class__ != lisp.Atom:
-            b = b.evaluate(scope)
-        return add(scope, lisp.Atom(a.data + b.data), *x[2:])
+        return add(scope, lisp.Atom(x[0].evaluate(scope).data + x[1].evaluate(scope).data), *x[2:])
 global_scope["+"] = add
 
 def sub(scope, *x):
@@ -175,13 +182,7 @@ def sub(scope, *x):
     if len(x) == 1:
         return x[0]
     else:
-        a = x[0]
-        if a.__class__ != lisp.Atom:
-            a = a.evaluate(scope)
-        b = x[1]
-        if b.__class__ != lisp.Atom:
-            b = b.evaluate(scope)
-        return sub(scope, lisp.Atom(a.data - b.data), *x[2:])
+        return sub(scope, lisp.Atom(x[0].evaluate(scope).data - x[1].evaluate(scope).data), *x[2:])
 global_scope["-"] = sub
 
 def mul(scope, *x):
@@ -190,13 +191,7 @@ def mul(scope, *x):
     if len(x) == 1:
         return x[0]
     else:
-        a = x[0]
-        if a.__class__ != lisp.Atom:
-            a = a.evaluate(scope)
-        b = x[1]
-        if b.__class__ != lisp.Atom:
-            b = b.evaluate(scope)
-        return mul(scope, lisp.Atom(a.data * b.data), *x[2:])
+        return mul(scope, lisp.Atom(x[0].evaluate(scope).data * x[1].evaluate(scope).data), *x[2:])
 global_scope["*"] = mul
 
 def div(scope, *x):
@@ -205,30 +200,20 @@ def div(scope, *x):
     if len(x) == 1:
         return x[0]
     else:
-        a = x[0]
-        if a.__class__ != lisp.Atom:
-            a = a.evaluate(scope)
-        b = x[1]
-        if b.__class__ != lisp.Atom:
-            b = b.evaluate(scope)
-        return div(scope, lisp.Atom(a.data / b.data), *x[2:])
+        return div(scope, lisp.Atom(x[0].evaluate(scope).data / x[1].evaluate(scope).data), *x[2:])
 global_scope["/"] = div
 
 def mod(scope, x, y):
-    if x.__class__ != lisp.Atom:
-        x = x.evaluate(scope)
-    if y.__class__ != lisp.Atom:
-        y = y.evaluate(scope)
+    x = x.evaluate(scope)
+    y = y.evaluate(scope)
     return lisp.Atom(x.data % y.data)
 global_scope["%"] = mod
 
 # Comparison Operators
 
 def lt(scope, x, y):
-    if x.__class__ != lisp.Atom:
-        x = x.evaluate(scope)
-    if y.__class__ != lisp.Atom:
-        y = y.evaluate(scope)
+    x = x.evaluate(scope)
+    y = y.evaluate(scope)
     if x.data < y.data:
         return t
     else:
@@ -236,15 +221,20 @@ def lt(scope, x, y):
 global_scope["<"] = lt
 
 def gt(scope, x, y):
-    if x.__class__ != lisp.Atom:
-        x = x.evaluate(scope)
-    if y.__class__ != lisp.Atom:
-        y = y.evaluate(scope)
+    x = x.evaluate(scope)
+    y = y.evaluate(scope)
     if x.data > y.data:
         return t
     else:
         return nil
 global_scope[">"] = gt
+
+# Other functions
+
+def range_(scope, x):
+    """Returns a list of numbers from 0 to x - 1"""
+    return lisp.List([lisp.Atom(i) for i in range(x.evaluate(scope).data)])
+global_scope["range"] = range_
 
 # Misc. Functions
 def time_(scope, x):
@@ -254,3 +244,4 @@ def time_(scope, x):
     s = time.time() - s
     return lisp.Atom(s)
 global_scope["time"] = time_
+
