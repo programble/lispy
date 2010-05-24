@@ -236,6 +236,17 @@ def range_(scope, x):
     return lisp.List([lisp.Atom(i) for i in range(x.evaluate(scope).data)])
 global_scope["range"] = range_
 
+# Stdio functions
+
+def printf(scope, fs, *a):
+    fs = fs.evaluate(scope).data
+    args = []
+    for i in a:
+        args.append(i.evaluate(scope).data)
+    sys.stdout.write(fs % tuple(args))
+    return nil
+global_scope["printf"] = printf
+
 # Misc. Functions
 def time_(scope, x):
     import time

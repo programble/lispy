@@ -101,3 +101,6 @@
   (if (zero? x)
     nil
     (append (range- (- x 1)) (- x 1))))
+
+;; Stdio macros
+(defmacro println (x) `(printf "%s\n" ,x))

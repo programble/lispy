@@ -97,7 +97,18 @@ class Reader:
     def read_string(self):
         string = ""
         while self.next() != '"':
-            string += self.current()
+            if self.current() == '\\':
+                escape = self.next()
+                if escape == 'n':
+                    string += '\n'
+                elif escape == 'r':
+                    string += '\r'
+                elif escape == '"':
+                    string += '"'
+                else:
+                    string += '\\' + escape
+            else:
+                string += self.current()
         return String(string)
 
     def read_number(self):

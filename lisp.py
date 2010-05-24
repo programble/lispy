@@ -77,7 +77,8 @@ class String(List):
         return self
 
     def __repr__(self):
-        return '"%s"' % self.data
+        x = repr(self.data)
+        return '"' + x[1:-1] + '"'
     
 class Lambda:
     def __init__(self, names, body):
