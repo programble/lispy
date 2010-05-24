@@ -72,7 +72,26 @@
 (defun identity (x) x)
 
 (defun contains? (ele coll)
-  (reduce (lambda (acc x) (if (= x ele) t nil)) (car coll) coll))
+  (reduce (lambda (acc x) (= x ele)) (car coll) coll))
+
+(defun map (fun coll)
+  (reduce (lambda (acc x) (cons (fun x) acc)) '() coll))
+
+(defun reverse (coll) (reduce (lambda (acc x) (cons x acc)) '() coll))
+
+;; Association list functions.
+(defun keys (coll) (map car coll))
+
+(defun vals (coll) (map cadr coll))
+
+(defun get (key coll) 
+  (reduce (lambda (acc x) (if (= key (car x)) (cadr x) nil)) nil coll))
+
+(defun remove (key coll)
+  (filter (lambda (x) (!= key (car x))) coll))
+
+(defun insert (key val coll) (cons '(key val) coll))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Apply
 ;(defmacro apply (f l) `(,f ,@l))
