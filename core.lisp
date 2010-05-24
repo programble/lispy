@@ -26,6 +26,10 @@
 (defmacro cadar (x) `(car (cdr (car ,x))))
 (defmacro caddar (x) `(car (cdr (cdr (car ,x)))))
 
+;; Common number functions
+(defmacro inc (x) `(+ ,x 1))
+(defmacro dec (x) `(- ,x 1))
+
 ;; Predicates
 (defun nil? (x)
   (or (= x '()) (= x nil)))
