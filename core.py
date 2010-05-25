@@ -248,14 +248,18 @@ global_scope["range"] = range_
 
 # Stdio functions
 
-def printf(scope, fs, *a):
+def format(scope, fs, *a):
     fs = fs.evaluate(scope).data
     args = []
     for i in a:
         args.append(i.evaluate(scope).data)
-    sys.stdout.write(fs % tuple(args))
+    return lisp.String(fs % tuple(args))
+global_scope["format"] = format
+
+def print_(scope, s):
+    sys.stdout.write(s.evaluate(scope).data)
     return nil
-global_scope["printf"] = printf
+global_scope["print"] = print_
 
 # Misc. Functions
 def time_(scope, x):

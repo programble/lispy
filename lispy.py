@@ -21,6 +21,7 @@ def load_lisp_core():
         expr.evaluate(core.global_scope)
 
 def repl():
+    global EOFError
     # REPL Banner
     version()
     

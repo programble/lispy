@@ -50,6 +50,7 @@
 ;; More normal flow control
 (defmacro if (p x y) `(cond (,p ,x) (t ,y)))
 (defmacro when (p & b) `(if ,p (do ,@b) nil))
+(defmacro when-not (p & b) `(when (not ,p) ,@b))
 
 ;; Append
 (defun append (x y)
@@ -105,4 +106,5 @@
     (append (range- (- x 1)) (- x 1))))
 
 ;; Stdio macros
+(defmacro printf (fs & a) `(print (format ,fs ,@a)))
 (defmacro println (x) `(printf "%s\n" ,x))
