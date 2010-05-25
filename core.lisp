@@ -76,7 +76,7 @@
 (defun identity (x) x)
 
 (defun contains? (ele coll)
-  (reduce (lambda (acc x) (= x ele)) (car coll) coll))
+  (reduce (lambda (acc x) (or acc (= x ele))) nil coll))
 
 (defun map (fun coll)
   (reduce (lambda (acc x) (cons (fun x) acc)) '() coll))
