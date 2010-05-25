@@ -87,16 +87,22 @@ class Lambda:
 
     def __call__(self, scope, *args):
         # Make sure we have the right amount of args for the amount of names
-        if len(args) != len(self.names.data):
-            raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))
+        if Symbol('&') in self.names.data:
+            if len(args) < len(self.names.data) - 1:
+                raise TypeError("expected %d arguments, got %d" % (len(self.names.data) - 1, len(args)))
+        else:
+            if len(args) != len(self.names.data):
+                raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))
         # Create a new local function scope
         fn_scope = Scope(scope)
         # Bind each arg to a name in the function scope
-        for name, value in zip([x.data for x in self.names.data], args):
-            # Evaluate each arg before binding
-            if value.__class__ != Atom:
-                value = value.evaluate(scope)
-            fn_scope[name] = value
+        for i in range(len(args)):
+            name = self.names.data[i].data
+            # Arity
+            if name == '&':
+                fn_scope[self.names.data[i+1].data] = List([a.evaluate(scope) for a in args[i:]])
+                break
+            fn_scope[name] = args[i].evaluate(scope)
         # Evaluate each expression in lambda body
         for expression in self.body[:-1]:
             expression.evaluate(fn_scope)
@@ -110,14 +116,22 @@ class Lambda:
 class Macro(Lambda):
     def __call__(self, scope, *args):
         # Make sure we have the right amount of args for the amount of names
-        if len(args) != len(self.names.data):
-            raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))
+        if Symbol('&') in self.names.data:
+            if len(args) < len(self.names.data) - 1:
+                raise TypeError("expected %d arguments, got %d" % (len(self.names.data) - 1, len(args)))
+        else:
+            if len(args) != len(self.names.data):
+                raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))
         # Create a new local function scope
         fn_scope = Scope(scope)
         # Bind each arg to a name in the function scope
-        for name, value in zip([x.data for x in self.names.data], args):
-            # Do not evaluate each arg before binding
-            fn_scope[name] = value
+        for i in range(len(args)):
+            name = self.names.data[i].data
+            # Arity
+            if name == '&':
+                fn_scope[self.names.data[i+1].data] = List(args[i:])
+                break
+            fn_scope[name] = args[i]
         # Evaluate each expression in lambda body
         for expression in self.body[:-1]:
             expression.evaluate(fn_scope)

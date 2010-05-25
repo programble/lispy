@@ -1,10 +1,8 @@
 ;; Lisp Core definitions for Lispy
 
 ;; Define Macros
-(def defmacro (macro (n a b) `(def ,n (macro ,a ,b))))
-;(def defmacro (macro (n a & b) `(def ,n (macro ,a ,@b))))
-(defmacro defun (n a b) `(def ,n (lambda ,a ,b)))
-;(defmacro defun (n a & b) `(def ,n (lambda ,a ,@b)))
+(def defmacro (macro (n a & b) `(def ,n (macro ,a ,@b))))
+(defmacro defun (n a & b) `(def ,n (lambda ,a ,@b)))
 (def defn defun)
 
 ;; Logical operators
@@ -51,7 +49,7 @@
 
 ;; More normal flow control
 (defmacro if (p x y) `(cond (,p ,x) (t ,y)))
-;(defmacro when (p & b) `(if ,p (do ,@b) nil))
+(defmacro when (p & b) `(if ,p (do ,@b) nil))
 
 ;; Append
 (defun append (x y)
