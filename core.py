@@ -126,6 +126,12 @@ def macro(scope, names, *body):
     return m
 global_scope["macro"] = macro
 
+def macroexpand(scope, expr):
+    m = expr.car().evaluate(scope)
+    l = lisp.Lambda(m.names, m.body)
+    return l(scope, *[lisp.List([lisp.Symbol("quote"), x]) for x in expr.cdr().data])
+global_scope["macroexpand"] = macroexpand
+
 # Other core functions
 
 def list_(scope, *x):
