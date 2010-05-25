@@ -141,7 +141,11 @@ class Reader:
         elif self.current() == '`':
             expr = [Symbol("backquote")]
         elif self.current() == ',':
-            expr = [Symbol("unquote")]
+            if self.next() == '@':
+                expr = [Symbol("unquote-list")]
+            else:
+                self.prev()
+                expr = [Symbol("unquote")]
         self.next()
         if self.current() == '(':
             expr.append(self.read_list())

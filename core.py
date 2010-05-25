@@ -109,6 +109,10 @@ def backquote(scope, expr):
             # Evaluate only unquoted items
             if x.car() == lisp.Symbol("unquote"):
                 new.append(x.cdr().car().evaluate(scope))
+            elif x.car() == lisp.Symbol("unquote-list"):
+                l = x.cdr().car().evaluate(scope)
+                for i in l.data:
+                    new.append(i)
             else:
                 new.append(backquote(scope, x))
         else:

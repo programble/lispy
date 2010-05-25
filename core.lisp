@@ -98,7 +98,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Apply
-;(defmacro apply (f l) `(,f ,@l))
+(defmacro apply (f l) `(,f ,@l))
 
 ;; Range
 (defun range- (x)

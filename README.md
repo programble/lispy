@@ -29,7 +29,7 @@ Usage
 
 ### REPL
 
-To run a Lispy REPL, either invoke Lispy without any filenames, or run
+To run a Lispy REPL, either invoke Lispy without a filename, or run
 Lispy with the `-r` or `--repl` option.
 
     lispy
