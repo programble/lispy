@@ -12,9 +12,9 @@ import core
 
 __version__ = "0.1.0"
 
-def load_lisp_core():
+def load_lisp_core(filename="core.lisp"):
     # Load up and evaluate core.lisp
-    f = open("core.lisp")
+    f = open(filename)
     reader = Reader(f.read())
     f.close()
     for expr in reader.read():
@@ -96,34 +96,38 @@ def help():
     print "       %s [options] -r" % sys.argv[0]
     print "       %s [options] -e expr" % sys.argv[0]
     print "Options:"
-    print "  -r, --repl        Start an REPL"
-    print "  -e, --evaluate    Evaluate a single expression"
-    print "  -n, --no-core     Do not load Lisp core"
-    print "  --version         Print version information and exit"
+    print "  -r, --repl                  Start an REPL"
+    print "  -e EXPR, --evaluate=EXPR    Evaluate a single expression"
+    print "  -n, --no-core               Do not load Lisp core"
+    print "  -c FILE, --core=FILE        Load the core from a different file"
+    print "  --version                   Print version information and exit"
     print
         
 def main(argv):
     # Parse command line arguments
     try:
-        opts, args = getopt.getopt(argv, "e:rnh", ["evaluate=", "repl", "no-core", "help", "version"])
+        opts, args = getopt.getopt(argv, "e:rnc:h", ["evaluate=", "repl", "no-core", "core", "help", "version"])
     except getopt.GetoptError, err:
         print '%s\n' % err
         help()
         sys.exit(1)
 
     load_core = True
+    core_filename = "core.lisp"
         
     for opt, arg in opts:
         if opt in ("-n", "--no-core"):
             load_core = False
+        elif opt in ("-c", "--core"):
+            core_filename = arg
         elif opt in ("-e", "--evaluate"):
             if load_core:
-                load_lisp_core()
+                load_lisp_core(core_filename)
             evaluate(arg)
             sys.exit()
         elif opt in ("-r", "--repl"):
             if load_core:
-                load_lisp_core()
+                load_lisp_core(core_filename)
             repl()
             sys.exit()
         elif opt == "--version":
@@ -134,7 +138,7 @@ def main(argv):
             sys.exit()
 
     if load_core:
-        load_lisp_core()
+        load_lisp_core(core_filename)
     
     # If not given a file to evaluate, start an REPL
     if len(args) == 0:
