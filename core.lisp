@@ -19,6 +19,7 @@
 
 ;; Common List Functions
 (defmacro caar (x) `(car (car ,x)))
+(defmacro cddr (x) `(cdr (cdr ,x)))
 (defmacro cadr (x) `(car (cdr ,x)))
 (defmacro caddr (x) `(car (cdr (cdr ,x))))
 (defmacro cadar (x) `(car (cdr (car ,x))))
@@ -27,6 +28,12 @@
 ;; Common number functions
 (defmacro inc (x) `(+ ,x 1))
 (defmacro dec (x) `(- ,x 1))
+
+(defun max (& xs)
+  (reduce (lambda (x y) (if (> y x) y x)) (car xs) xs))
+
+(defun min (& xs)
+  (reduce (lambda (x y) (if (< y x) y x)) (car xs) xs))
 
 ;; Predicates
 (defun nil? (x)
@@ -49,8 +56,10 @@
 
 ;; More normal flow control
 (defmacro if (p x y) `(cond (,p ,x) (t ,y)))
+(defmacro if-not (p x y) `(if (not ,p) ,x ,y))
 (defmacro when (p & b) `(if ,p (do ,@b) nil))
 (defmacro when-not (p & b) `(when (not ,p) ,@b))
+(def unless when-not)
 
 ;; Append
 (defun append (x y)
@@ -108,3 +117,33 @@
 ;; Stdio macros
 (defmacro printf (fs & a) `(print (format ,fs ,@a)))
 (defmacro println (x) `(printf "%s\n" ,x))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmacro constantly (x) `(lambda (& args) ,x))
+
+(defun count (coll) (reduce (lambda (acc x) (inc acc)) 0 coll))
+
+(defun distinct (coll) (reduce (lambda (acc x) (if (contains? x acc) acc (cons x acc))) '() coll))
+
+(defmacro dotimes (name bound & body) `(dolist (,name (range ,bound)) ,@body))
+
+(defmacro every? (pred coll) `(reduce (lambda (acc x) (and acc (,pred x))) t ,coll))
+
+(defun keep (fun coll) (reduce (lambda (acc x) (if (nil? (fun x)) acc (cons (fun x) acc)))))
+
+(defun last (coll)
+  (if (nil? (cdr coll))
+    (car coll)
+    (last (cdr coll))))
+
+(defun repeat (n x)
+  (if (zero? n)
+    '()
+    (cons x (repeat (dec n) x))))
+
+(defun repeatedly (n f)
+  (unless (zero? n)
+    (cons (f) (repeatedly (dec n) f))))
+
+(defun some (pred coll)
+  (reduce (lambda (acc x) (or acc (pred x))) nil coll))
