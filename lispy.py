@@ -106,7 +106,7 @@ def help():
 def main(argv):
     # Parse command line arguments
     try:
-        opts, args = getopt.getopt(argv, "e:rnc:h", ["evaluate=", "repl", "no-core", "core", "help", "version"])
+        opts, args = getopt.getopt(argv, "e:rnc:h", ["evaluate=", "repl", "no-core", "core=", "help", "version"])
     except getopt.GetoptError, err:
         print '%s\n' % err
         help()
