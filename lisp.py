@@ -94,7 +94,12 @@ class Lambda:
             if len(args) != len(self.names.data):
                 raise TypeError("expected %d arguments, got %d" % (len(self.names.data), len(args)))
         # Create a new local function scope
-        fn_scope = Scope(scope)
+        if scope.bindings.has_key("*current-lambda*") and scope["*current-lambda*"] == self:
+            fn_scope = scope
+        else:
+            fn_scope = Scope(scope)
+        # Marker
+        fn_scope["*current-lambda*"] = self
         # Bind each arg to a name in the function scope
         for i in range(len(args)):
             name = self.names.data[i].data
