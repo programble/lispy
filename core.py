@@ -94,7 +94,6 @@ def lambda_(scope, names, *body):
     l = lisp.Lambda(names, body)
     return l
 global_scope["lambda"] = lambda_
-global_scope["fn"] = lambda_
 
 # Macro Functions
 
@@ -255,6 +254,13 @@ def format(scope, fs, *a):
         args.append(i.evaluate(scope).data)
     return lisp.String(fs % tuple(args))
 global_scope["format"] = format
+
+def str_(scope, *a):
+    strs = []
+    for x in a:
+        strs.append(str(x.evaluate(scope).data))
+    return lisp.String(''.join(strs))
+global_scope["str"] = str_
 
 def print_(scope, s):
     sys.stdout.write(s.evaluate(scope).data)
