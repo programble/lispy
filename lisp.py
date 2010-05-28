@@ -14,6 +14,8 @@ class Atom:
             return False
 
     def cons(self, other):
+        if self == Symbol("nil"):
+            return List([other])
         return List([other, self])
     
     def evaluate(self, scope):
