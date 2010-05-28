@@ -51,6 +51,8 @@ class List(Atom):
         return List([other] + self.data)
     
     def evaluate(self, scope):
+        if len(self.data) == 0:
+            return Symbol("nil")
         # A list is evaluated by calling the car as a function with the cdr as arguments
         fn = self.car()
         fn = fn.evaluate(scope)
