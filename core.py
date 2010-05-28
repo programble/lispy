@@ -18,6 +18,7 @@ global_scope["nil"] = nil
 # Lispy Information
 global_scope["*lispy-version*"] = lisp.List([lisp.Atom(0), lisp.Atom(1), lisp.Atom(0)])
 global_scope["*lispy-platform*"] = lisp.String(sys.platform)
+global_scope["*lispy-platform-version*"] = lisp.String(sys.version)
 
 # Core functions (from McCarthy's paper)
 
