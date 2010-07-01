@@ -112,7 +112,7 @@
 (defun range- (x)
   (if (zero? x)
     nil
-    (append (range- (- x 1)) (- x 1))))
+    (cons x (range- (dec x)))))
 
 ;; Stdio macros
 (defmacro printf (fs & a) `(print (format ,fs ,@a)))
@@ -147,3 +147,8 @@
 
 (defun some (pred coll)
   (reduce (lambda (acc x) (or acc (pred x))) nil coll))
+
+(defun last (list)
+  (if (cdr list)
+    (last (cdr list))
+    list))
