@@ -117,18 +117,16 @@ class Lambda:
         # Create a new function-local scope
         local = Scope(scope)
         # Bind each argument to a binding
-        bi = ai = -1
+        bi = ai = 0
         while bi != len(self.bindings.data) and ai != len(self.bindings.data):
-            ai += 1
-            bi += 1
             # Optional argument
             if self.bindings.data[bi] == Symbol('?'):
                 if ai == len(args):
                     # Nothing supplied for this optional
+                    local[self.bindings.data[bi+1].data] = List([])
                     break
                 else:
                     bi += 1
-                    ai -= 1
                     continue
             # Rest argument
             elif self.bindings.data[bi] == Symbol('&'):
@@ -142,6 +140,8 @@ class Lambda:
                 if bi == len(self.bindings.data) or ai == len(args):
                     raise TypeError("expected %d arguments, got %d" % (len(self.bindings.data), len(args)))
                 local[self.bindings.data[bi].data] = args[ai].evaluate(scope)
+            ai += 1
+            bi += 1
         # Evaluate each expression in the body (in local function scope)
         for expression in self.body[:-1]:
             expression.evaluate(local)
@@ -153,18 +153,16 @@ class Macro(Lambda):
         # Create a new function-local scope
         local = Scope(scope)
         # Bind each argument to a binding
-        bi = ai = -1
+        bi = ai = 0
         while bi != len(self.bindings.data) and ai != len(self.bindings.data):
-            ai += 1
-            bi += 1
             # Optional argument
             if self.bindings.data[bi] == Symbol('?'):
                 if ai == len(args):
                     # Nothing supplied for this optional
+                    local[self.bindings.data[bi+1].data] = List([])
                     break
                 else:
                     bi += 1
-                    ai -= 1
                     continue
             # Rest argument
             elif self.bindings.data[bi] == Symbol('&'):
@@ -178,8 +176,10 @@ class Macro(Lambda):
                 if bi == len(self.bindings.data) or ai == len(args):
                     raise TypeError("expected %d arguments, got %d" % (len(self.bindings.data), len(args)))
                 local[self.bindings.data[bi].data] = args[ai]
+            ai += 1
+            bi += 1
         # Evaluate each expression in the body (in local function scope)
         for expression in self.body[:-1]:
             expression.evaluate(local)
-        # Evaluate the last expression twice: once in the local scope, and once in the outer scope
+        # Return the evaluated last expression after evaluating it again in the outer scope
         return self.body[-1].evaluate(local).evaluate(scope)
