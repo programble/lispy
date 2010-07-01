@@ -33,7 +33,7 @@
 (defmacro when (p & b) `(if ,p (do ,@b) nil))
 
 ;; Apply
-(defmacro apply (f l) `(,f ,@l))
+(defmacro apply (f l) `(,f ,@(eval l)))
 
 ;; Identity (does nothing, woot woot)
 (defun identity (x)
