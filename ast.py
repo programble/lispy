@@ -82,3 +82,23 @@ class List(Base):
         else:
             # Call the car with cdr as arguments
             return self.car().evaluate(scope)(scope, *self.cdr().data)
+
+class String(List):
+    def car(self):
+        if len(self.data):
+            return Character(self.data[0])
+        else:
+            return String("")
+
+    def cdr(self):
+        if len(self.data):
+            return String("")
+        else:
+            return String(self.data[1:])
+
+    def __repr__(self):
+        return '"' + repr(self.data)[1:-1] '"'
+
+    def evaluate(self, scope):
+        # A string evaluates to itself, as if a quoted list
+        return self
