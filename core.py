@@ -26,6 +26,10 @@ def quote(scope, x):
     return x
 scope["quote"] = quote
 
+def eval(scope, x):
+    return x.evaluate(scope)
+scope["eval"] = eval
+
 def eq(scope, x, y):
     x, y = x.evaluate(scope), y.evaluate(scope)
     if x == y:
