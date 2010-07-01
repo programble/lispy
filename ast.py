@@ -29,13 +29,17 @@ class Character(Atom):
     def __repr__(self):
         return '\\' + self.data
 
-class Symbol:
+class Symbol(Base):
     def __repr__(self):
         return self.data
 
     def evaluate(self, scope):
         # Resolve symbol
         return scope[self.data]
+
+class Keyword(Atom):
+    def __repr__(self):
+        return ':' + self.data
     
 class List(Base):
     def car(self):
