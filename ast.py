@@ -99,7 +99,7 @@ class String(List):
             return String(self.data[1:])
 
     def __repr__(self):
-        return '"' + repr(self.data)[1:-1] '"'
+        return '"' + repr(self.data)[1:-1] + '"'
 
     def evaluate(self, scope):
         # A string evaluates to itself, as if a quoted list
