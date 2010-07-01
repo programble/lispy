@@ -27,7 +27,7 @@ def quote(scope, x):
 scope["quote"] = quote
 
 def eval(scope, x):
-    return x.evaluate(scope)
+    return x.evaluate(scope).evaluate(scope)
 scope["eval"] = eval
 
 def eq(scope, x, y):
