@@ -171,7 +171,7 @@ class Macro(Lambda):
             elif self.bindings.data[bi] == Symbol('&'):
                 if ai == len(args):
                     raise TypeError("expected at least %d arguments, got %d" % (bi + 1, ai))
-                local[self.bindings.data[bi+1].data] = List(args[ai:] + [[]])
+                local[self.bindings.data[bi+1].data] = List(list(args[ai:]) + [[]])
                 break
             # Normal argument
             else:
