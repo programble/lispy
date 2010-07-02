@@ -27,3 +27,10 @@
 
 ;; Predicates
 (defmacro nil? (x) `(cond (,x nil) (t)))
+
+;; Flow control
+(defmacro if (p x y) `(cond (,p ,x) (t ,y)))
+(defmacro when (p & b) `(if ,p (do ,@b) nil))
+
+;; Apply
+(defmacro apply (f l) `(,f ,@l))
