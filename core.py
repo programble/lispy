@@ -55,7 +55,7 @@ scope["cons"] = cons
 
 def cond(scope, *x):
     for clause in x:
-        if clause.cdr() == List([]) and not clause.car().evaluate(scope) == nil:
+        if clause.cdr() == List([[]]) and not clause.car().evaluate(scope) == nil:
             return clause.car().evaluate(scope)
         if not clause.car().evaluate(scope) == nil:
             for expr in clause.cdr().data[:-2]:
