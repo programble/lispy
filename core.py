@@ -151,7 +151,7 @@ def add(scope, *x):
         return x[0]
     else:
         return add(scope, lisp.Atom(x[0].evaluate(scope).data + x[1].evaluate(scope).data), *x[2:])
-global_scope["+"] = add
+scope["+"] = add
 
 def sub(scope, *x):
     if len(x) == 0:
@@ -160,7 +160,7 @@ def sub(scope, *x):
         return x[0]
     else:
         return sub(scope, lisp.Atom(x[0].evaluate(scope).data - x[1].evaluate(scope).data), *x[2:])
-global_scope["-"] = sub
+scope["-"] = sub
 
 def mul(scope, *x):
     if len(x) == 0:
@@ -169,7 +169,7 @@ def mul(scope, *x):
         return x[0]
     else:
         return mul(scope, lisp.Atom(x[0].evaluate(scope).data * x[1].evaluate(scope).data), *x[2:])
-global_scope["*"] = mul
+scope["*"] = mul
 
 def div(scope, *x):
     if len(x) == 0:
@@ -178,13 +178,13 @@ def div(scope, *x):
         return x[0]
     else:
         return div(scope, lisp.Atom(x[0].evaluate(scope).data / x[1].evaluate(scope).data), *x[2:])
-global_scope["/"] = div
+scope["/"] = div
 
 def mod(scope, x, y):
     x = x.evaluate(scope)
     y = y.evaluate(scope)
     return lisp.Atom(x.data % y.data)
-global_scope["%"] = mod
+scope["%"] = mod
 
 # Comparison Operators
 
@@ -195,7 +195,7 @@ def lt(scope, x, y):
         return t
     else:
         return nil
-global_scope["<"] = lt
+scope["<"] = lt
 
 def gt(scope, x, y):
     x = x.evaluate(scope)
@@ -204,4 +204,4 @@ def gt(scope, x, y):
         return t
     else:
         return nil
-global_scope[">"] = gt
+scope[">"] = gt
