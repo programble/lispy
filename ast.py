@@ -108,6 +108,7 @@ class String(List):
 class Lambda:
     def __init__(self, bindings, body):
         self.bindings = bindings
+        self.bindings.data = self.bindings.data[:-1]
         self.body = body
 
     def evaluate(self, scope):
