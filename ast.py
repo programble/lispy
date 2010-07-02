@@ -74,7 +74,7 @@ class List(Base):
 
     def evaluate(self, scope):
         # Empty list
-        if not len(self.data):
+        if not len(self.data) or self.data == [[]]:
             return Symbol("nil")
         # Improper list
         elif self.data[-1] != []:
@@ -83,7 +83,7 @@ class List(Base):
         # Proper list
         else:
             # Call the car with cdr as arguments
-            return self.car().evaluate(scope)(scope, *self.cdr().data)
+            return self.car().evaluate(scope)(scope, *self.cdr().data[:-1])
 
 class String(List):
     def car(self):
