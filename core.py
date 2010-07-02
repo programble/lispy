@@ -205,3 +205,13 @@ def gt(scope, x, y):
     else:
         return nil
 scope[">"] = gt
+
+# Other functions
+
+def macroexpand(scope, x):
+    while x.car().evaluate(scope).__class__ == Macro:
+        m = x.car().evaluate(scope)
+        x = Lambda(List(m.bindings.data + [[]]), m.body)(scope, *[List([Symbol("quote"), i]) for i in x.cdr().data[:-1]])
+    return x
+scope["macroexpand"] = macroexpand
+        
