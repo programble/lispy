@@ -108,6 +108,9 @@ class String(List):
     def __repr__(self):
         return '"' + repr(self.data)[1:-1] + '"'
 
+    def __str__(self):
+        return str(self.data)
+
     def evaluate(self, scope):
         # A string evaluates to itself, as if a quoted list
         return self
