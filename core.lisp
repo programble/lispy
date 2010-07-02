@@ -53,3 +53,8 @@
 ;; Stream functions
 (defmacro printf (s & a) `(print (format ,s ,@a)))
 (defmacro println (s) `(printf "%s\n" ,s))
+
+;; Unit test
+(defmacro test (t)
+  `(let ((result (if ,t "passed" "failed")))
+     (printf "test %s %s\n" (repr (quote ,t)) result)))

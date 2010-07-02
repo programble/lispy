@@ -76,6 +76,9 @@ class List(Base):
         else:
             return '(' + repr(self.car()) + " . " + repr(self.cdr()) + ')'
 
+    def __str__(self):
+        return repr(self)
+
     def evaluate(self, scope):
         # Empty list
         if not len(self.data) or self.data == [[]]:

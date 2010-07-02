@@ -235,6 +235,10 @@ def format(scope, s, *a):
     return String(s % tuple(a))
 scope["format"] = format
 
+def repr_(scope, x):
+    return String(repr(x.evaluate(scope)))
+scope["repr"] = repr_
+
 # Stream functions
 
 scope["*standard-output*"] = sys.stdout
