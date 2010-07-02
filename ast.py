@@ -108,13 +108,13 @@ class String(List):
 class Lambda:
     def __init__(self, bindings, body):
         self.bindings = bindings
-        self.bindings.data = self.bindings.data[:-1]
         self.body = body
 
     def evaluate(self, scope):
         return self
 
     def __call__(self, scope, *args):
+        self.bindings.data = self.bindings.data[:-1] # HACK
         # Create a new function-local scope
         local = Scope(scope)
         # Bind each argument to a binding
@@ -143,6 +143,7 @@ class Lambda:
                 local[self.bindings.data[bi].data] = args[ai].evaluate(scope)
             ai += 1
             bi += 1
+        self.bindings.data.append([]) # HACK
         # Evaluate each expression in the body (in local function scope)
         for expression in self.body[:-1]:
             expression.evaluate(local)
@@ -151,6 +152,7 @@ class Lambda:
 
 class Macro(Lambda):
     def __call__(self, scope, *args):
+        self.bindings.data = self.bindings.data[:-1] # HACK
         # Create a new function-local scope
         local = Scope(scope)
         # Bind each argument to a binding
@@ -179,6 +181,7 @@ class Macro(Lambda):
                 local[self.bindings.data[bi].data] = args[ai]
             ai += 1
             bi += 1
+        self.bindings.data.append([]) # HACK
         # Evaluate each expression in the body (in local function scope)
         for expression in self.body[:-1]:
             expression.evaluate(local)
