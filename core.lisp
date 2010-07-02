@@ -34,3 +34,11 @@
 
 ;; Apply
 (defmacro apply (f l) `(,f ,@l))
+
+;; Identity (does nothing, woot woot)
+(defun identity (x)
+  x)
+
+;; Association lists (maps)
+(defun assoc (map key val)
+  (cons (cons key val) map))
