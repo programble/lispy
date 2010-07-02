@@ -133,7 +133,7 @@ class Lambda:
             elif self.bindings.data[bi] == Symbol('&'):
                 if ai == len(args):
                     raise TypeError("expected at least %d arguments, got %d" % (bi + 1, ai))
-                local[self.bindings.data[bi+1].data] = List([x.evaluate(scope) for x in args[ai:]])
+                local[self.bindings.data[bi+1].data] = List([x.evaluate(scope) for x in args[ai:]] + [[]])
                 break
             # Normal argument
             else:
