@@ -1,6 +1,8 @@
 # Copyright 2010 Curtis McEnroe <programble@gmail.com>
 # Licensed under the GNU GPLv3
 
+import sys
+
 from scope import Scope
 from ast import *
 
@@ -226,4 +228,21 @@ def macroexpand(scope, x):
         x = Lambda(m.bindings, m.body)(scope, *[List([Symbol("quote"), i, []]) for i in x.cdr().data[:-1]])
     return x
 scope["macroexpand"] = macroexpand
-        
+
+def format(scope, s, *a):
+    s = s.evaluate(scope).data
+    a = [x.evaluate(scope).data for x in a]
+    return String(s % tuple(a))
+scope["format"] = format
+
+# Stream functions
+
+scope["*standard-output*"] = sys.stdout
+scope["*standard-error*"] = sys.stderr
+scope["*standard-input*"] = sys.stdin
+scope["*out*"] = sys.stdout
+
+def print_(scope, x):
+    scope["*out*"].write(str(x.evaluate(scope)))
+    return nil
+scope["print"] = print_

@@ -49,3 +49,7 @@
 ;; Association lists (maps)
 (defun assoc (map key val)
   (cons (cons key val) map))
+
+;; Stream functions
+(defmacro printf (s & a) `(print (format ,s ,@a)))
+(defmacro println (s) `(printf "%s\n" ,s))

@@ -15,6 +15,9 @@ class Base:
         else:
             return False
 
+    def __str__(self):
+        return str(self.data)
+
     def evaluate(self, scope):
         raise NotImplementedError("Abstract Function")
 
