@@ -20,7 +20,7 @@ scope["nil"] = nil
 # Lispy information
 scope["*lispy-version*"] = List([Number(0), Number(2), Number(0), []])
 
-# Core functions
+# Core core functions
 
 def quote(scope, x):
     return x
@@ -106,3 +106,102 @@ scope["syntax-quote"] = syntax_quote
 def macro(scope, names, *body):
     return Macro(names, body)
 scope["macro"] = macro
+
+# Other core functions
+
+def list_(scope, *x):
+    return List([i.evaluate(scope) for i in x] + [[]])
+scope["list"] = list_
+
+def let(scope, bindings, *exprs):
+    local = Scope(scope)
+    for pair in bindings.data[:-1]:
+        local[pair.car().data] = pair.cdr().car().evaluate(local)
+    for expr in exprs[:-1]:
+        expr.evaluate(local)
+    return exprs[-1].evaluate(local)
+scope["let"] = let
+
+def do(scope, *exprs):
+    for expr in exprs[:-1]:
+        expr.evaluate(scope)
+    return exprs[-1].evaluate(scope)
+scope["do"] = do
+
+def dolist(scope, nl, *exprs):
+    ret = nil
+    # Create new local scope
+    local_scope = Scope(scope)
+    # Evaluate the list
+    l = nl.cdr().car().evaluate(scope)
+    for i in l.data[:-1]:
+        # Bind this item to the name
+        local_scope[nl.car().data] = i.evaluate(scope)
+        for expr in exprs:
+            ret = expr.evaluate(local_scope)
+    return ret
+scope["dolist"] = dolist
+
+# Arithmetic functions
+
+def add(scope, *x):
+    if len(x) == 0:
+        return 0
+    if len(x) == 1:
+        return x[0]
+    else:
+        return add(scope, lisp.Atom(x[0].evaluate(scope).data + x[1].evaluate(scope).data), *x[2:])
+global_scope["+"] = add
+
+def sub(scope, *x):
+    if len(x) == 0:
+        return 0
+    if len(x) == 1:
+        return x[0]
+    else:
+        return sub(scope, lisp.Atom(x[0].evaluate(scope).data - x[1].evaluate(scope).data), *x[2:])
+global_scope["-"] = sub
+
+def mul(scope, *x):
+    if len(x) == 0:
+        return 1
+    if len(x) == 1:
+        return x[0]
+    else:
+        return mul(scope, lisp.Atom(x[0].evaluate(scope).data * x[1].evaluate(scope).data), *x[2:])
+global_scope["*"] = mul
+
+def div(scope, *x):
+    if len(x) == 0:
+        return 0
+    if len(x) == 1:
+        return x[0]
+    else:
+        return div(scope, lisp.Atom(x[0].evaluate(scope).data / x[1].evaluate(scope).data), *x[2:])
+global_scope["/"] = div
+
+def mod(scope, x, y):
+    x = x.evaluate(scope)
+    y = y.evaluate(scope)
+    return lisp.Atom(x.data % y.data)
+global_scope["%"] = mod
+
+# Comparison Operators
+
+def lt(scope, x, y):
+    x = x.evaluate(scope)
+    y = y.evaluate(scope)
+    if x.data < y.data:
+        return t
+    else:
+        return nil
+global_scope["<"] = lt
+
+def gt(scope, x, y):
+    x = x.evaluate(scope)
+    y = y.evaluate(scope)
+    if x.data > y.data:
+        return t
+    else:
+        return nil
+global_scope[">"] = gt
