@@ -6,7 +6,9 @@ import string
 from ast import *
 
 class Reader:
-    def __init__(self, source):
+    def __init__(self, source, filename=None):
+        self.filename = filename
+        self.lineno = 1
         self.source = source + '\n'
         self.index = -1
 
@@ -29,12 +31,16 @@ class Reader:
         while self.index + 1 < len(self.source):
             self.next()
             if self.current() in string.whitespace:
+                if self.current() == '\n':
+                    self.lineno += 1
                 # Ignore
                 continue
             elif self.current() == ';':
                 # Comment until EOL
                 while self.next() != '\n':
                     pass
+                self.lineno += 1
+                continue
             elif self.current() == '(':
                 exprs.append(self.read_list())
             elif self.current() == ')':
@@ -62,6 +68,8 @@ class Reader:
             else:
                 self.prev()
                 exprs.append(self.read_symbol())
+            exprs[-1].meta["file"] = self.filename
+            exprs[-1].meta["line"] = self.lineno
         return exprs
 
     def read_list(self):
@@ -69,7 +77,15 @@ class Reader:
         proper = True
         while self.next() != ')':
             if self.current() in string.whitespace:
+                if self.current() == '\n':
+                    self.lineno += 1
                 # Ignore
+                continue
+            elif self.current() == ';':
+                # Comment until EOL
+                while self.next() != '\n':
+                    pass
+                self.lineno += 1
                 continue
             elif self.current() == '(':
                 # List in a list in a list in a list
@@ -100,10 +116,13 @@ class Reader:
             else:
                 self.prev()
                 list.append(self.read_symbol())
+            list[-1].meta["file"] = self.filename
+            list[-1].meta["line"] = self.lineno
         if proper:
             return List(list + [[]])
         else:
             return List(list)
+        return l
 
     def read_string(self):
         string = ""

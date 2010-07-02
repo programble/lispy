@@ -15,7 +15,7 @@ __version__ = "0.2.0"
 def load_lisp_core(filename="core.lisp"):
     # Load up and evaluate core.lisp
     f = open(filename)
-    reader = Reader(f.read())
+    reader = Reader(f.read(), filename)
     f.close()
     for expr in reader.read():
         expr.evaluate(core.scope)

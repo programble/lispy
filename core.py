@@ -84,7 +84,9 @@ def def_(local, symbol, value):
 scope["def"] = def_
 
 def lambda_(scope, names, *body):
-    return Lambda(names, body)
+    l = Lambda(names, body)
+    l.meta = names.meta
+    return l
 scope["lambda"] = lambda_
 
 # Macro functions
@@ -110,7 +112,9 @@ def syntax_quote(scope, expr):
 scope["syntax-quote"] = syntax_quote
 
 def macro(scope, names, *body):
-    return Macro(names, body)
+    m = Macro(names, body)
+    m.meta = names.meta
+    return m
 scope["macro"] = macro
 
 # Other core functions
