@@ -6,6 +6,7 @@ from scope import Scope
 class Base:
     def __init__(self, data):
         self.data = data
+        self.meta = {"name": None}
 
     def __eq__(self, other):
         # Must be of same type to compare
@@ -109,6 +110,7 @@ class Lambda:
     def __init__(self, bindings, body):
         self.bindings = bindings
         self.body = body
+        self.meta = {"name": None}
 
     def evaluate(self, scope):
         return self
