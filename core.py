@@ -150,7 +150,7 @@ def add(scope, *x):
     if len(x) == 1:
         return x[0]
     else:
-        return add(scope, lisp.Atom(x[0].evaluate(scope).data + x[1].evaluate(scope).data), *x[2:])
+        return add(scope, Number(x[0].evaluate(scope).data + x[1].evaluate(scope).data), *x[2:])
 scope["+"] = add
 
 def sub(scope, *x):
@@ -159,7 +159,7 @@ def sub(scope, *x):
     if len(x) == 1:
         return x[0]
     else:
-        return sub(scope, lisp.Atom(x[0].evaluate(scope).data - x[1].evaluate(scope).data), *x[2:])
+        return sub(scope, Number(x[0].evaluate(scope).data - x[1].evaluate(scope).data), *x[2:])
 scope["-"] = sub
 
 def mul(scope, *x):
@@ -168,7 +168,7 @@ def mul(scope, *x):
     if len(x) == 1:
         return x[0]
     else:
-        return mul(scope, lisp.Atom(x[0].evaluate(scope).data * x[1].evaluate(scope).data), *x[2:])
+        return mul(scope, Number(x[0].evaluate(scope).data * x[1].evaluate(scope).data), *x[2:])
 scope["*"] = mul
 
 def div(scope, *x):
@@ -177,13 +177,13 @@ def div(scope, *x):
     if len(x) == 1:
         return x[0]
     else:
-        return div(scope, lisp.Atom(x[0].evaluate(scope).data / x[1].evaluate(scope).data), *x[2:])
+        return div(scope, Number(x[0].evaluate(scope).data / x[1].evaluate(scope).data), *x[2:])
 scope["/"] = div
 
 def mod(scope, x, y):
     x = x.evaluate(scope)
     y = y.evaluate(scope)
-    return lisp.Atom(x.data % y.data)
+    return Number(x.data % y.data)
 scope["%"] = mod
 
 # Comparison Operators
