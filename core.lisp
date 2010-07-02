@@ -36,8 +36,15 @@
 (defmacro apply (f l) `(,f ,@(eval l)))
 
 ;; Identity (does nothing, woot woot)
-(defun identity (x)
-  x)
+(defun identity (x) x)
+
+;; Reduce
+(defun reduce (f xs ? x)
+  (if (nil? x)
+    (reduce f xs (car xs))
+    (if (nil? xs)
+      x
+      (reduce f (cdr xs) (f x (car xs))))))
 
 ;; Association lists (maps)
 (defun assoc (map key val)
