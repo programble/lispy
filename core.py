@@ -94,7 +94,7 @@ def syntax_quote(scope, expr):
                 new.append(x.cdr().car().evaluate(scope))
             elif x.car() == Symbol("unquote-splice"):
                 l = x.cdr().car().evaluate(scope)
-                for i in l.data[:-1]:
+                for i in l.data:
                     new.append(i)
             else:
                 new.append(syntax_quote(scope, x))
