@@ -49,7 +49,7 @@ class Keyword(Atom):
     
 class List(Base):
     def car(self):
-        if len(self.data):
+        if len(self.data) and self.data != [[]]:
             return self.data[0]
         else:
             return List([])

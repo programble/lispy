@@ -160,7 +160,7 @@ scope["dolist"] = dolist
 
 def add(scope, *x):
     if len(x) == 0:
-        return 0
+        return Number(0)
     if len(x) == 1:
         return x[0]
     else:
@@ -169,7 +169,7 @@ scope["+"] = add
 
 def sub(scope, *x):
     if len(x) == 0:
-        return 0
+        return Number(0)
     if len(x) == 1:
         return x[0]
     else:
@@ -178,7 +178,7 @@ scope["-"] = sub
 
 def mul(scope, *x):
     if len(x) == 0:
-        return 1
+        return Number(1)
     if len(x) == 1:
         return x[0]
     else:
@@ -187,7 +187,7 @@ scope["*"] = mul
 
 def div(scope, *x):
     if len(x) == 0:
-        return 0
+        return Number(0)
     if len(x) == 1:
         return x[0]
     else:
