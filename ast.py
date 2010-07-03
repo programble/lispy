@@ -52,12 +52,12 @@ class List(Base):
         if len(self.data) and self.data != [[]]:
             return self.data[0]
         else:
-            return List([])
+            return Symbol("nil")
 
     def cdr(self):
         # Empty list
-        if not len(self.data):
-            return List([])
+        if not len(self.data) or self.data == [[]]:
+            return Symbol("nil")
         # Proper list
         elif self.data[-1] == []:
             return List(self.data[1:])
