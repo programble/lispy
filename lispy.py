@@ -101,7 +101,7 @@ def help():
     print "Options:"
     print "  -r, --repl                  Start an REPL"
     print "  -e EXPR, --evaluate=EXPR    Evaluate a single expression"
-    print "  -n, --no-core               Do not load Lisp core"
+    print "  -n, --no-core               Do not load lisp core"
     print "  -c FILE, --core=FILE        Load the core from a different file"
     print "  --version                   Print version information and exit"
     print
