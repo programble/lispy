@@ -116,6 +116,16 @@
 (defn count (xs)
   (reduce (fn (acc _) (inc acc)) xs 0))
 
+(defn nth (xs i)
+  (if (zero? i)
+    (car xs)
+    (nth (cdr xs) (dec i))))
+
+(defn last (xs)
+  (if (nil? (cdr xs))
+    (car xs)
+    (last (cdr xs))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
