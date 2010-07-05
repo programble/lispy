@@ -27,7 +27,7 @@
 
 ;; Predicates
 (defn nil? (x)
-  (cond (,x nil) (t)))
+  (cond (x nil) (t)))
 
 ;; Flow control
 (defmacro if (p x y) `(cond (,p ,x) (t ,y)))
