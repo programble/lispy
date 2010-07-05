@@ -5,7 +5,10 @@
 import sys
 import getopt
 import traceback
-import readline
+try:
+    import readline
+except ImportError:
+    pass
 
 from reader import Reader
 import core
