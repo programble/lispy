@@ -26,7 +26,6 @@
 (test-function cons
                (test (= (cons :foo :bar) '(:foo . :bar)))
                (test (= (cons :foo nil) '(:foo)))
-               (test (= (cons nil nil) '(nil)))
                (test (= (cons :foo (cons :bar nil)) '(:foo :bar))))
 
 (test-function cond
