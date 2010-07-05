@@ -46,10 +46,6 @@
       x
       (reduce f (cdr xs) (f x (car xs))))))
 
-;; Association lists (maps)
-(defun assoc (map key val)
-  (cons (cons key val) map))
-
 ;; Stream functions
 (defmacro printf (s & a) `(print (format ,s ,@a)))
 (defmacro println (s) `(printf "%s\n" ,s))
@@ -71,3 +67,29 @@
      (def *test-pass-count* 0)
      ,@tests
      (printf "%d/%d tests passed\n\n" *test-pass-count* *test-count*)))
+
+;; Number-related functions
+(defmacro inc (x) `(+ ,x 1))
+(defmacro dec (x) `(- ,x 1))
+
+(defun max (& xs)
+  (reduce (lambda (x y) (if (> y x) y x)) xs))
+
+(defun min (& xs)
+  (reduce (lambda (x y) (if (< y x) y x)) xs))
+
+;; Number-related predicates
+(defun even? (x)
+  (= (% x 2) 0))
+
+(defun odd? (x)
+  (not (even? x)))
+
+(defun zero? (x)
+  (= x 0))
+
+(defun pos? (x)
+  (> x 0))
+
+(defun neg? (x)
+  (< x 0))
