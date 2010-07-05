@@ -41,7 +41,7 @@
 ;; Reduce
 (defun reduce (f xs ? x)
   (if (nil? x)
-    (reduce f xs (car xs))
+    (reduce f (cdr xs) (car xs))
     (if (nil? xs)
       x
       (reduce f (cdr xs) (f x (car xs))))))

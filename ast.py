@@ -137,7 +137,7 @@ class Lambda:
             if self.bindings.data[bi] == Symbol('?'):
                 if ai == len(args):
                     # Nothing supplied for this optional
-                    local[self.bindings.data[bi+1].data] = Symbol("nil")
+                    local[self.bindings.data[bi+1].data] = List([])
                     break
                 else:
                     bi += 1
