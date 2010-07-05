@@ -140,6 +140,11 @@
     ys
     (cons (car xs) (concat (cdr xs) ys))))
 
+(defn take (n xs)
+  (if (zero? n)
+    nil
+    (cons (car xs) (take (dec n) (cdr xs)))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
