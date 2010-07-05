@@ -134,7 +134,11 @@
   (map cdr alist))
 
 (defn get (alist key)
-  (reduce (fn (acc x) (when (= (car x) key) (cdr x))) alist nil))
+  (if (nil? alist)
+    nil
+    (if (= (caar alist) key)
+      (cdr (car alist))
+      (get (cdr alist) key))))
 
 (defn assoc (alist key val)
     (cons (cons key val) (dissoc alist key)))
