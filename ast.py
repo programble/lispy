@@ -82,7 +82,7 @@ class List(Base):
     def evaluate(self, scope):
         # Empty list
         if not len(self.data) or self.data == [[]]:
-            return Symbol("nil")
+            return self
         # Improper list
         elif self.data[-1] != []:
             # Call the car with cdr as argument
