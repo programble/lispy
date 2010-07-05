@@ -135,6 +135,11 @@
     (cons y nil)
     (cons (car xs) (append (cdr xs) y))))
 
+(defn concat (xs ys)
+  (if (nil? xs)
+    ys
+    (cons (car xs) (concat (cdr xs) ys))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
