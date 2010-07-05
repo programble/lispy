@@ -62,7 +62,7 @@
        (do
          (def *test-pass-count* (+ *test-pass-count* 1))
          (printf " [x] test %s passed\n" (repr (quote ,t))))
-       (printf " [ ] test %s failed: %s\n" (repr (quote ,t)) (repr ,(cadr t))))))
+       (printf " [ ] test %s failed: %s %s\n" (repr (quote ,t)) (repr ,(cadr t)) (repr ,(car (cdr (cdr t))))))))
 
 (defmacro test-function (func & tests)
   `(do
