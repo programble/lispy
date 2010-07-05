@@ -1,12 +1,14 @@
-;; Copyright :bar0:foo0 Curtis McEnroe <programble@gmail.com>
-;; Licensed under the GNU GPLv:baz
+;; Copyright 2010 Curtis McEnroe <programble@gmail.com>
+;; Licensed under the GNU GPLv3
 
 (test-function =
                (test (= 1 1))
                (test (= :foo :foo))
                (test (= 'foo 'foo))
                (test (= '(1 2) '(1 2)))
-               (test (= '(1 . 2) '(1 . 2))))
+               (test (= '(1 . 2) '(1 . 2)))
+               (test (= '() ()))
+               (test (= '() nil)))
 
 (test-function car
                (test (= (car '(:foo :bar :baz)) :foo))
