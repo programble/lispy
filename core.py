@@ -16,7 +16,7 @@ t = Symbol("t")
 scope["t"] = t
 
 # nil is nil (but also the empty list)
-nil = Symbol("nil")
+nil = List([])
 scope["nil"] = nil
 
 # Lispy information

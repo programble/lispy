@@ -68,7 +68,7 @@ class List(Base):
     def __repr__(self):
         # Empty list
         if self.data == []:
-            return "()"
+            return "nil"
         # Proper list
         elif self.data[-1] == []:
             return '(' + ' '.join([repr(x) for x in self.data[:-1]]) + ')'

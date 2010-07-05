@@ -118,7 +118,7 @@ class Reader:
                 list.append(self.read_symbol())
             list[-1].meta["file"] = self.filename
             list[-1].meta["line"] = self.lineno
-        if proper:
+        if proper and len(list):
             return List(list + [[]])
         else:
             return List(list)
