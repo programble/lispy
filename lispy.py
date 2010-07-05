@@ -49,7 +49,7 @@ def repl():
         # Evaluate the source line
         for expr in exprs:
             try:
-                print expr.evaluate(core.scope)
+                print repr(expr.evaluate(core.scope))
             except Exception, e:
                 traceback.print_exc()
         source = ""
@@ -63,7 +63,7 @@ def evaluate(expr):
         return
     for expr in exprs:
         try:
-            print expr.evaluate(core.scope)
+            print repr(expr.evaluate(core.scope))
         except Exception, e:
             print e
             return
