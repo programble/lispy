@@ -111,7 +111,11 @@
 
 ;; List-related functions
 (defn contains? (xs key)
-  (reduce (fn (acc x) (or acc (= x key))) xs nil))
+  (if (nil? xs)
+    nil
+    (if (= (car xs) key)
+      t
+      (contains? (cdr xs) key))))
 
 (defn count (xs)
   (reduce (fn (acc _) (inc acc)) xs 0))
