@@ -145,6 +145,11 @@
     nil
     (cons (car xs) (take (dec n) (cdr xs)))))
 
+(defn drop (n xs)
+  (if (zero? n)
+    xs
+    (drop (dec n) (cdr xs))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
