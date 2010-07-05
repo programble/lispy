@@ -46,6 +46,14 @@
       x
       (reduce f (cdr xs) (f x (car xs))))))
 
+;; Filter
+(defun filter (p xs)
+  (if (nil? xs)
+    xs
+    (if (p (car xs))
+      (cons (car xs) (filter p (cdr xs)))
+      (filter p (cdr xs)))))
+
 ;; Stream functions
 (defmacro printf (s & a) `(print (format ,s ,@a)))
 (defmacro println (s) `(printf "%s\n" ,s))
