@@ -150,6 +150,11 @@
     xs
     (drop (dec n) (cdr xs))))
 
+(defn repeat (n x)
+  (if (zero? n)
+    nil
+    (cons x (repeat (dec n) x))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
