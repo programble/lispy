@@ -54,6 +54,12 @@
       (cons (car xs) (filter p (cdr xs)))
       (filter p (cdr xs)))))
 
+;; Map
+(defun map (f xs)
+  (if (nil? xs)
+    xs
+    (cons (f (car xs)) (map f (cdr xs)))))
+
 ;; Stream functions
 (defmacro printf (s & a) `(print (format ,s ,@a)))
 (defmacro println (s) `(printf "%s\n" ,s))
