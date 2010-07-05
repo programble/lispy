@@ -130,6 +130,11 @@
     (car xs)
     (last (cdr xs))))
 
+(defn append (xs y)
+  (if (nil? xs)
+    (cons y nil)
+    (cons (car xs) (append (cdr xs) y))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
