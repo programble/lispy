@@ -127,8 +127,7 @@
   (reduce (fn (acc x) (when (= (car x) key) (cdr x))) alist nil))
 
 (defn assoc (alist key val)
-  (let ((alist (dissoc alist key)))
-    (cons (cons key val) alist)))
+    (cons (cons key val) (dissoc alist key)))
 
 (defn dissoc (alist key)
   (filter (fn (x) (not= (car x) key)) alist))
