@@ -59,8 +59,10 @@ class List(Base):
         if not len(self.data) or self.data == [[]]:
             return List([])
         # Proper list
-        elif self.data[-1] == []:
+        elif self.data[-1] == [] and len(self.data) > 2:
             return List(self.data[1:])
+        elif self.data[1] == []:
+            return List([])
         # Improper list
         else:
             return self.data[1]
