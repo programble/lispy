@@ -110,3 +110,18 @@
   (< x 0))
 
 ;; List-related functions
+(defn contains? (xs key)
+  (reduce (fn (acc x) (or acc (= x key))) xs nil))
+
+(defn count (xs)
+  (reduce (fn (acc _) (inc acc)) xs 0))
+
+;; Association list related functions
+(defn keys (alist)
+  (map car alist))
+
+(defn vals (alist)
+  (map cdr alist))
+
+(defn get (alist key)
+  (reduce (fn (acc x) (when (= (car x) key) (cdr x))) (cons nil alist)))
