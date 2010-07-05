@@ -125,3 +125,8 @@
 
 (defn get (alist key)
   (reduce (fn (acc x) (when (= (car x) key) (cdr x))) (cons nil alist)))
+
+(defn assoc (alist key val)
+  (if (contains? (keys alist) key)
+    (assoc (dissoc alist key) key val)
+    (cons (cons key val) alist)))
