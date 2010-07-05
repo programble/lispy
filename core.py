@@ -85,11 +85,11 @@ def def_(local, symbol, value):
     return local[symbol.data]
 scope["def"] = def_
 
-def lambda_(scope, names, *body):
+def fn(scope, names, *body):
     l = Lambda(names, body)
     l.meta = names.meta
     return l
-scope["lambda"] = lambda_
+scope["fn"] = fn
 
 # Macro functions
 

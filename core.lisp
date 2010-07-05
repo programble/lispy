@@ -3,7 +3,7 @@
 
 ;; Def-related macros
 (def defmacro (macro (n a & b) `(def ,n (macro ,a ,@b))))
-(defmacro defun (n a & b) `(def ,n (lambda ,a ,@b)))
+(defmacro defn (n a & b) `(def ,n (fn ,a ,@b)))
 
 ;; Logical operators
 (defmacro and (x y) `(cond (,x (cond (,y t) (t nil))) (t nil)))
@@ -26,7 +26,8 @@
 (defmacro caddar (x) `(car (cdr (cdr (car ,x)))))
 
 ;; Predicates
-(defmacro nil? (x) `(cond (,x nil) (t)))
+(defn nil? (x)
+  (cond (,x nil) (t)))
 
 ;; Flow control
 (defmacro if (p x y) `(cond (,p ,x) (t ,y)))
@@ -36,10 +37,10 @@
 (defmacro apply (f l) `(,f ,@(eval l)))
 
 ;; Identity (does nothing, woot woot)
-(defun identity (x) x)
+(defn identity (x) x)
 
 ;; Reduce
-(defun reduce (f xs ? x)
+(defn reduce (f xs ? x)
   (if (nil? x)
     (reduce f (cdr xs) (car xs))
     (if (nil? xs)
@@ -47,7 +48,7 @@
       (reduce f (cdr xs) (f x (car xs))))))
 
 ;; Filter
-(defun filter (p xs)
+(defn filter (p xs)
   (if (nil? xs)
     xs
     (if (p (car xs))
@@ -55,7 +56,7 @@
       (filter p (cdr xs)))))
 
 ;; Map
-(defun map (f xs)
+(defn map (f xs)
   (if (nil? xs)
     xs
     (cons (f (car xs)) (map f (cdr xs)))))
@@ -86,24 +87,26 @@
 (defmacro inc (x) `(+ ,x 1))
 (defmacro dec (x) `(- ,x 1))
 
-(defun max (& xs)
-  (reduce (lambda (x y) (if (> y x) y x)) xs))
+(defn max (& xs)
+  (reduce (fn (x y) (if (> y x) y x)) xs))
 
-(defun min (& xs)
-  (reduce (lambda (x y) (if (< y x) y x)) xs))
+(defn min (& xs)
+  (reduce (fn (x y) (if (< y x) y x)) xs))
 
 ;; Number-related predicates
-(defun even? (x)
+(defn even? (x)
   (= (% x 2) 0))
 
-(defun odd? (x)
+(defn odd? (x)
   (not (even? x)))
 
-(defun zero? (x)
+(defn zero? (x)
   (= x 0))
 
-(defun pos? (x)
+(defn pos? (x)
   (> x 0))
 
-(defun neg? (x)
+(defn neg? (x)
   (< x 0))
+
+;; List-related functions
