@@ -155,6 +155,16 @@
     nil
     (cons x (repeat (dec n) x))))
 
+(defn reverse (xs)
+  (if (nil? xs)
+    xs
+    (append (reverse (cdr xs)) (car xs))))
+
+(defn zip (xs ys)
+  (if (or (nil? xs) (nil? ys))
+    nil
+    (cons (cons (car xs) (car ys)) (zip (cdr xs) (cdr ys)))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
