@@ -159,21 +159,21 @@ scope["dolist"] = dolist
 # Arithmetic functions
 
 def add(scope, *x):
-    if len(x) == 0:
-        return Number(0)
-    if len(x) == 1:
-        return x[0]
-    else:
-        return add(scope, Number(x[0].evaluate(scope).data + x[1].evaluate(scope).data), *x[2:])
+    acc = 0
+    for i in x:
+        acc += i.evaluate(scope).data
+    return Number(acc)
 scope["+"] = add
 
 def sub(scope, *x):
     if len(x) == 0:
         return Number(0)
     if len(x) == 1:
-        return x[0]
-    else:
-        return sub(scope, Number(x[0].evaluate(scope).data - x[1].evaluate(scope).data), *x[2:])
+        return Number(x[0].evaluate(scope).data * -1)
+    acc = x[0].evaluate(scope).data
+    for i in x[1:]:
+        acc -= i.evaluate(scope).data
+    return Number(acc)
 scope["-"] = sub
 
 def mul(scope, *x):
@@ -185,13 +185,22 @@ def mul(scope, *x):
         return mul(scope, Number(x[0].evaluate(scope).data * x[1].evaluate(scope).data), *x[2:])
 scope["*"] = mul
 
+def mul(scope, *x):
+    acc = 1
+    for i in x:
+        acc *= i.evaluate(scope).data
+    return Number(acc)
+scope["*"] = mul
+
 def div(scope, *x):
     if len(x) == 0:
-        return Number(0)
+        return Number(1)
     if len(x) == 1:
-        return x[0]
-    else:
-        return div(scope, Number(x[0].evaluate(scope).data / x[1].evaluate(scope).data), *x[2:])
+        return Number(1 / x[0].evaluate(scope).data)
+    acc = x[0].evaluate(scope).data
+    for i in x[1:]:
+        acc /= i.evaluate(scope).data
+    return Number(acc)
 scope["/"] = div
 
 def mod(scope, x, y):
