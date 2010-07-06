@@ -145,6 +145,10 @@
     nil
     (cons (car xs) (take (dec n) (cdr xs)))))
 
+(defn take-while (p xs)
+  (when (p (car xs))
+    (cons (car xs) (take-while p (cdr xs)))))
+
 (defn drop (n xs)
   (if (zero? n)
     xs
