@@ -118,7 +118,6 @@ class String(List):
         return self
 
 class Lambda:
-    last_call = None
     def __init__(self, bindings, body):
         self.bindings = bindings
         self.body = body
@@ -129,14 +128,8 @@ class Lambda:
 
     def __call__(self, scope, *args):
         self.bindings.data = self.bindings.data[:-1] # HACK
-        # If this is a recursion, use the same scope
-        if Lambda.last_call == self:
-            local = scope
-        # Otherwise, create a new scope
-        else:
-            local = Scope(scope)
-        # Set the last called lambda
-        Lambda.last_call = self
+        # Create a new scope
+        local = Scope(scope)
         # Bind each argument to a binding
         bi = ai = 0
         while bi != len(self.bindings.data) and ai != len(self.bindings.data):
