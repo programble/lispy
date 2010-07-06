@@ -154,6 +154,11 @@
     xs
     (drop (dec n) (cdr xs))))
 
+(defn drop-while (p xs)
+  (if (p (car xs))
+    (drop-while p (cdr xs))
+    xs))
+
 (defn repeat (n x)
   (if (zero? n)
     nil
