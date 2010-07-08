@@ -225,3 +225,172 @@ expression twice, returning its result.
     => (macro (x) `(foo ,x))
     <ast.Macro instance at 0x87305ec>
 
+### list
+
+    (list & items)
+
+Creates a new list by evaluating each argument it receives.
+
+    => (def x 1)
+    x
+    => (list x 2 3)
+    (1 2 3)
+
+### let
+
+    (let bindings & body)
+
+Creates a new scope in which is binding in `bindings` is bound and
+evaluates each expression in `body` sequentially, returning the result
+of the last expression.
+
+`bindings` is a list of `(name value)` pairs.
+
+    => (let ((x 1) (y 2)) (list x y))
+    (1 2)
+
+### do
+
+    (do & body)
+
+Evaluates each expression in `body` and returns the result of the last
+expression.
+
+    => (def x 1)
+    x
+    => (do (set! x 2) x)
+    2
+
+### +
+
+    (+ & values)
+
+If given no arguments, evaluates to 0. If given one or more arguments,
+evaluates to the sum of all arguments.
+
+    => (+)
+    0
+    => (+ 1 2 3)
+    6
+
+### -
+
+    (- & values)
+
+If given no arguments, evaluates to 0. If given one argument,
+evaluates to the negation of that value. If given two or more
+arguments, evaluates to the difference of all arguments.
+
+    => (-)
+    0
+    => (- 1)
+    -1
+    => (- 1 2 3)
+    -4
+
+### *
+
+    (* & values)
+
+If given no arguments, evaluates to 1. If given one argument,
+evaluates to its value. If given two or more arguments, evaluates to
+the product of all arguments.
+
+    => (*)
+    1
+    => (* 2)
+    2
+    => (* 2 2 3)
+    12
+
+### /
+
+    (/ & values)
+
+If given no arguments, evaluates to 1. If given one arguments,
+evaluates to the reciprocal of the value. If given two or more
+arguments, evaluates to the quotient of all arguments.
+
+    => (/)
+    1
+    => (/ 2.0)
+    0.5
+    => (/ 6.0 2.0 2.0)
+    1.5
+
+### %
+
+    (% x y)
+
+Evaluates to the remainder of the division of `x` by `y`.
+
+    => (% 4 2)
+    0
+    => (% 5 2)
+    1
+
+### <
+
+    (< x y)
+
+Evaluates to `t` if `x` is less then `y`, otherwise, evaluates to
+`nil`.
+
+    => (< 1 2)
+    t
+    => (< 2 1)
+    nil
+
+### >
+
+    (> x y)
+
+Evaluates to `t` if `x` is greater than `y`, otherwise, evaluates to
+`nil`.
+
+    => (> 2 1)
+    t
+    => (> 1 2)
+    nil
+
+### macroexpand
+
+    (macroexpand expression)
+
+Expands the expression until the car is not a macro.
+
+    => (def m (macro (x) `(foo ,x)))
+    m
+    => (macroexpand (m 1))
+    (foo 1)
+
+### format
+
+    (format string & args)
+
+Formats the string `string` with `args` in the style of C's `printf`.
+
+    => (format "foo%d" 2)
+    "foo2"
+
+### repr
+
+    (repr expression)
+
+Evaluates to the string representation of `expression`.
+
+    => (repr 1)
+    "1"
+    => (repr '(1 2 3))
+    "(1 2 3)"
+
+### print
+
+    (print string)
+
+Writes `string` to the stream `*out*` is bound to. Always evaluates to
+`nil`.
+
+    => (print "foobar\n")
+    foobar
+    nil
