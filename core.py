@@ -82,7 +82,7 @@ def def_(local, symbol, value):
     value.meta["name"] = symbol.data
     # Bind in global scope
     scope[symbol.data] = value
-    return local[symbol.data]
+    return symbol
 scope["def"] = def_
 
 def fn(scope, names, *body):
