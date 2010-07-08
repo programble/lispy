@@ -76,6 +76,9 @@ def def_(local, symbol, value):
     # Can only bind to a symbol
     if symbol.__class__ != Symbol:
         return nil
+    # Cannot bind already bound symbol
+    if scope.has_key(symbol.data):
+        return nil
     # Evaluate value
     value = value.evaluate(scope)
     # Set metadata name
@@ -84,6 +87,35 @@ def def_(local, symbol, value):
     scope[symbol.data] = value
     return symbol
 scope["def"] = def_
+
+def undef(local, symbol):
+    if scope.has_key(symbol.data):
+        value = scope[symbol.data]
+        del(scope[symbol.data])
+        return value
+    return nil
+scope["undef!"] = undef
+
+def set(scope, symbol, value):
+    # Can only bind to a symbol
+    if symbol.__class__ != Symbol:
+        return nil
+    value = value.evaluate(scope)
+    if scope.has_key(symbol.data):
+        ret = scope[symbol.data]
+    else:
+        ret = nil
+    scope[symbol.data] = value
+    return ret
+scope["set!"] = set
+
+def unset(scope, symbol):
+    if scope.has_key(symbol.data):
+        value = scope[symbol.data]
+        del(scope[symbol.data])
+        return value
+    return nil
+scope["unset!"] = unset
 
 def fn(scope, names, *body):
     l = Lambda(names, body)

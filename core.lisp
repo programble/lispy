@@ -61,6 +61,10 @@
     xs
     (cons (f (car xs)) (map f (cdr xs)))))
 
+;; Alter!
+(defmacro alter! (name func & args)
+  `(set! ,name (,func ,name ,@args)))
+
 ;; Stream functions
 (defmacro printf (s & a) `(print (format ,s ,@a)))
 (defmacro println (s) `(printf "%s\n" ,s))
