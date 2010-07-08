@@ -72,10 +72,10 @@
 ;; Unit test
 (defmacro test (t)
   `(do
-     (def *test-count* (+ *test-count* 1))
+     (alter! *test-count* + 1)
      (if ,t
        (do
-         (def *test-pass-count* (+ *test-pass-count* 1))
+         (alter! *test-pass-count* + 1)
          (printf " [x] test %s passed\n" (repr (quote ,t))))
        (printf " [ ] test %s failed: %s %s\n" (repr (quote ,t)) (repr ,(cadr t)) (repr ,(car (cdr (cdr t))))))))
 
@@ -85,7 +85,9 @@
      (def *test-count* 0)
      (def *test-pass-count* 0)
      ,@tests
-     (printf "%d/%d tests passed\n\n" *test-pass-count* *test-count*)))
+      (printf "%d/%d tests passed\n\n" *test-pass-count* *test-count*)
+      (undef! *test-count*)
+      (undef! *test-pass-count*)))
 
 ;; Number-related functions
 (defmacro inc (x) `(+ ,x 1))

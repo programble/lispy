@@ -1,6 +1,8 @@
 ;; Copyright 2010 Curtis McEnroe <programble@gmail.com>
 ;; Licensed under the GNU GPLv3
 
+(def *test* nil)
+
 (test-function =
                (test (= 1 1))
                (test (= :foo :foo))
@@ -34,19 +36,14 @@
                (test (= (cond (nil :foo) (:bar)) :bar))
                (test (= (cond (nil :foo) (:bar :baz)) :baz)))
 
-(test-function def
-               (def *test* :foo)
-               (test (= *test* :foo))
-               (def *test* :bar)
-               (test (= *test* :bar)))
-
 (test-function syntax-quote
+               (set! *test* :bar)
                (test (= `(foo ,*test*) '(foo :bar)))
-               (def *test* '(:bar :baz))
+               (set! *test* '(:bar :baz))
                (test (= `(foo ,@*test*) '(foo :bar :baz))))
 
 (test-function list
-               (def *test* :foo)
+               (set! *test* :foo)
                (test (= (list *test* :bar) '(:foo :bar))))
 
 (test-function let
@@ -55,15 +52,12 @@
                (let ((foo :foo)
                      (bar (list foo :bar)))
                  (test (= bar '(:foo :bar))))
-               (def *test* :foo)
+               (set! *test* :foo)
                (let ((*test* :bar))
                  (test (= *test* :bar))))
 
 (test-function do
                (test (= (do :foo :bar :baz) :baz)))
-
-(test-function dolist
-               (test (= (dolist (x '(:foo :bar :baz)) x) :baz)))
 
 (test-function +
                (test (= (+) 0))
@@ -102,9 +96,9 @@
                (test (= (> 1 2) nil)))
 
 (test-function macroexpand
-               (def *test* (macro (x) `(+ ,x)))
+               (set! *test* (macro (x) `(+ ,x)))
                (test (= (macroexpand (*test* 1)) '(+ 1)))
-               (def *test* (macro (x) `(+ ,x ,x)))
+               (set! *test* (macro (x) `(+ ,x ,x)))
                (def *test-test* (macro (x) `(*test* ,x)))
                (test (= (macroexpand (*test-test* 1)) '(+ 1 1))))
 
