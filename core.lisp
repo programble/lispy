@@ -25,6 +25,10 @@
 (defmacro cadar (x) `(car (cdr (car ,x))))
 (defmacro caddar (x) `(car (cdr (cdr (car ,x)))))
 
+;; Version as string
+(defn lispy-version ()
+  (format "Lispy %d.%d.%d" (car *lispy-version*) (cadr *lispy-version*) (caddr *lispy-version*)))
+
 ;; Predicates
 (defn nil? (x)
   (cond (x nil) (t)))
