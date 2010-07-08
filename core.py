@@ -80,9 +80,9 @@ def def_(local, symbol, value):
     if scope.has_key(symbol.data):
         return nil
     # Evaluate value
-    value = value.evaluate(scope)
+    value = value.evaluate(local)
     # Set metadata name
-    value.meta["name"] = symbol.data
+    #value.meta["name"] = symbol.data
     # Bind in global scope
     scope[symbol.data] = value
     return symbol
@@ -166,7 +166,7 @@ def let(scope, bindings, *exprs):
     for pair in bindings.data[:-1]:
         local[pair.car().data] = pair.cdr().car().evaluate(local)
         # Set metadata name
-        local[pair.car().data].meta["name"] = pair.car().data
+        #local[pair.car().data].meta["name"] = pair.car().data
     for expr in exprs[:-1]:
         expr.evaluate(local)
     return exprs[-1].evaluate(local)
