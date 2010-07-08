@@ -7,6 +7,14 @@ Features
  * Python interop
  * <del>Destructive set functions (`set!`, etc)</del>
 
+Documentation
+-------------
+
+ * Document Python Core functions
+ * Document Lisp Core functions
+ * Document syntax
+   * Lambda argument syntax (`?` `&`)
+
 Reader
 ------
 
