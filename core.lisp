@@ -174,6 +174,18 @@
     nil
     (cons (cons (car xs) (car ys)) (zip (cdr xs) (cdr ys)))))
 
+(defmacro dolist (bind & body)
+  (let ((name (car bind))
+        (list (cadr bind)))
+    `((fn (xs)
+        (if (nil? xs)
+          xs
+          (do
+            (let ((,name (car xs)))
+              ,@body)
+            (recur (cdr xs)))))
+      ,list)))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))

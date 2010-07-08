@@ -142,20 +142,6 @@ def do(scope, *exprs):
     return exprs[-1].evaluate(scope)
 scope["do"] = do
 
-def dolist(scope, nl, *exprs):
-    ret = nil
-    # Create new local scope
-    local_scope = Scope(scope)
-    # Evaluate the list
-    l = nl.cdr().car().evaluate(scope)
-    for i in l.data[:-1]:
-        # Bind this item to the name
-        local_scope[nl.car().data] = i.evaluate(scope)
-        for expr in exprs:
-            ret = expr.evaluate(local_scope)
-    return ret
-scope["dolist"] = dolist
-
 # Arithmetic functions
 
 def add(scope, *x):
