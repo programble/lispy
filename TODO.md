@@ -5,7 +5,7 @@ Features
 --------
 
  * Python interop
- * Destructive set functions (set!, etc)
+ * Destructive set functions (`set!`, etc)
 
 Reader
 ------
@@ -27,7 +27,8 @@ Python Core
 Lisp Core
 ---------
 
- * Fix reduce somehow (does not work for t/nil stuff)
+ * Fix `reduce` somehow (does not work for `t`/`nil` stuff)
+ * Fix `reverse` (possibly a problem in `append`)
 
 Scope
 -----
