@@ -5,7 +5,7 @@ Features
 --------
 
  * Python interop
- * Destructive set functions (`set!`, etc)
+ * <del>Destructive set functions (`set!`, etc)</del>
 
 Reader
 ------
