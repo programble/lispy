@@ -128,8 +128,12 @@ class Lambda:
 
     def __call__(self, scope, *args):
         self.bindings.data = self.bindings.data[:-1] # HACK
-        # Create a new scope
-        local = Scope(scope)
+        if scope.has_key("recur") and scope["recur"] == self:
+            # This is recursion, don't create a new scope
+            local = scope
+        else:
+            # Create a new scope
+            local = Scope(scope)
         # Bind `recur` to self (to alow for recursion from anonymous functions)
         local["recur"] = self
         # Bind each argument to a binding

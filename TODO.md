@@ -19,7 +19,7 @@ AST
 ### Lambda
 
  * Do something to improve recursion
- * Prevent new scopes being created on recursion
+ * <del>Prevent new scopes being created on recursion</del>
 
 Python Core
 -----------

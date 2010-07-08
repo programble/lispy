@@ -30,3 +30,6 @@ class Scope:
             return repr(self.parent) + '\n' + repr(self.bindings)
         else:
             return repr(self.bindings)
+
+    def has_key(self, key):
+        return self.bindings.has_key(key)
