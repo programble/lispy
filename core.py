@@ -100,11 +100,13 @@ def set(scope, symbol, value):
     # Can only bind to a symbol
     if symbol.__class__ != Symbol:
         return nil
-    value = value.evaluate(scope)
     if scope.has_key(symbol.data):
         ret = scope[symbol.data]
+    elif scope.parent:
+        return set(scope.parent, symbol, value)
     else:
         ret = nil
+    value = value.evaluate(scope)
     scope[symbol.data] = value
     return ret
 scope["set!"] = set
@@ -114,6 +116,8 @@ def unset(scope, symbol):
         value = scope[symbol.data]
         del(scope[symbol.data])
         return value
+    elif scope.parent:
+        return unset(scope.parent, symbol)
     return nil
 scope["unset!"] = unset
 
