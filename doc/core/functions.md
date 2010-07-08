@@ -10,8 +10,9 @@ Documentation on core functions implemented in Python
 
     (quote x)
 
-Prevents its argument from being evaluated. The reader macro `'`
-expands to this function.
+Prevents its argument from being evaluated.
+
+The reader macro `'` expands to this function.
 
     => (quote x)
     x
@@ -155,4 +156,72 @@ Unbinds `name` in the scope it is bound in. Evaluates to the value of
     1
     => (unset! y)
     nil
+
+### fn
+
+    (fn args & body)
+
+Creates a new Lambda function that takes the list `args` as arguments
+and evaluates `body` in order and returns the value of the last
+expression.
+
+    => (fn (x) (eval x))
+    <ast.Lambda instance at 0x873066c>
+
+### syntax-quote
+
+    (syntax-quote expression)
+
+Similar to `quote`, except that any unquoted (see `unquote`) parts of
+`expression` are evaluated.
+
+The reader macro <code>`</code> expands to this function.
+
+    => (def x 1)
+    x
+    => `(foo (unquote x))
+    (foo 1)
+
+#### unquote
+
+    (unquote expression)
+
+Note: only bound inside `syntax-quote`
+
+Evaluates `expression` and replaces with its result inside
+`syntax-quote`.
+
+The reader macro `,` expands to this function.
+
+    => (def x 1)
+    x
+    => `(foo ,x)
+    (foo 1)
+
+#### unquote-splice
+
+    (unquote-splice expression)
+
+Note: only bound inside `syntax-quote`
+
+Evaluates `expression` and splices the resulting list into a
+`syntax-quote` expression.
+
+The reader macro `,@` expands to this function.
+
+    => (def x '(1 2 3))
+    x
+    => `(foo ,@x)
+    (foo 1 2 3)
+
+### macro
+
+    (macro args & body)
+
+Creates a new macro that takes the list `args` as arguments and
+evaluates the expressions in `body` in order, and evaluates the last
+expression twice, returning its result.
+
+    => (macro (x) `(foo ,x))
+    <ast.Macro instance at 0x87305ec>
 
