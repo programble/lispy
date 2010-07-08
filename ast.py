@@ -130,6 +130,8 @@ class Lambda:
         self.bindings.data = self.bindings.data[:-1] # HACK
         # Create a new scope
         local = Scope(scope)
+        # Bind `recur` to self (to alow for recursion from anonymous functions)
+        local["recur"] = self
         # Bind each argument to a binding
         bi = ai = 0
         while bi != len(self.bindings.data) and ai != len(self.bindings.data):
