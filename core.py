@@ -199,15 +199,6 @@ def sub(scope, *x):
 scope["-"] = sub
 
 def mul(scope, *x):
-    if len(x) == 0:
-        return Number(1)
-    if len(x) == 1:
-        return x[0]
-    else:
-        return mul(scope, Number(x[0].evaluate(scope).data * x[1].evaluate(scope).data), *x[2:])
-scope["*"] = mul
-
-def mul(scope, *x):
     acc = 1
     for i in x:
         acc *= i.evaluate(scope).data
