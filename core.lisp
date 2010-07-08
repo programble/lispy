@@ -203,12 +203,12 @@
 (defn vals (alist)
   (map cdr alist))
 
-(defn get (alist key)
+(defn get (alist key ? not-found)
   (if (nil? alist)
-    nil
+    not-found
     (if (= (caar alist) key)
       (cdr (car alist))
-      (get (cdr alist) key))))
+      (get (cdr alist) key not-found))))
 
 (defn assoc (alist key val)
     (cons (cons key val) (dissoc alist key)))
