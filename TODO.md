@@ -1,6 +1,12 @@
 TODO List
 =========
 
+Features
+--------
+
+ * Python interop
+ * Destructive set functions (set!, etc)
+
 Reader
 ------
 
