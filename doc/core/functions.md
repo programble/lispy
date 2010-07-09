@@ -28,7 +28,7 @@ Evaluates its argument (twice). Can be used to evaluate quoted data.
     => (eval (quote eval))
     <function eval at 0x87a34c4>
 
-### ==
+### =
 
     (== x y)
 
