@@ -86,12 +86,10 @@
 (defmacro test-function (func & tests)
   `(do
      (printf "%s tests:\n" (quote ,func))
-     (def *test-count* 0)
-     (def *test-pass-count* 0)
-     ,@tests
-      (printf "%d/%d tests passed\n\n" *test-pass-count* *test-count*)
-      (undef! *test-count*)
-      (undef! *test-pass-count*)))
+     (let ((*test-count* 0)
+           (*test-pass-count* 0))
+       ,@tests
+       (printf "%d/%d tests passed\n\n" *test-pass-count* *test-count*))))
 
 ;; Number-related functions
 (defmacro inc (x) `(+ ,x 1))
