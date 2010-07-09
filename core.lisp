@@ -196,6 +196,9 @@
             (recur (cdr xs)))))
       ,list)))
 
+(defmacro for (binding body) 
+  `(map (fn (,(car binding)) ,body) ,(cadr binding)))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
