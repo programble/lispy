@@ -30,14 +30,14 @@ Evaluates its argument (twice). Can be used to evaluate quoted data.
 
 ### =
 
-    (== x y)
+    (= x y)
 
 Tests its two arguments for equality. Evaluates to `t` on equality and
 `nil` otherwise.
 
-    => (== 1 2)
+    => (= 1 2)
     nil
-    => (== 1 1)
+    => (= 1 1)
     t
 
 ### car
