@@ -105,7 +105,7 @@ class String(List):
             return String("")
 
     def cdr(self):
-        if len(self.data):
+        if not len(self.data):
             return String("")
         else:
             return String(self.data[1:])
