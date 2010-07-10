@@ -31,13 +31,13 @@ car and cdr
 -----------
 
 Lispy takes `car` and `cdr` from Common Lisp. These functions are
-`first` and `rest`, respectively, in Clojure.
+`first` and `next`, respectively, in Clojure.
 
 Clojure:
     (first [1 2 3])
 Lispy:
     (car '(1 2 3))
 Clojure:
-    (rest [1 2 3])
+    (next [1 2 3])
 Lispy:
     (cdr '(1 2 3))
