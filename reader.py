@@ -192,7 +192,11 @@ class Reader:
     def read_symbol(self):
         symbol = ""
         while self.next() not in string.whitespace + ')':
-            symbol += self.current()
+            if self.current() == '|':
+                while self.next() != '|':
+                    symbol += self.current()
+            else:
+                symbol += self.current()
         self.prev()
         return Symbol(symbol)
 

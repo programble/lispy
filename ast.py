@@ -37,7 +37,10 @@ class Character(Atom):
 
 class Symbol(Base):
     def __repr__(self):
-        return self.data
+        if ' ' in self.data or ')' in self.data:
+            return '|' + self.data + '|'
+        else:
+            return self.data
 
     def evaluate(self, scope):
         # Resolve symbol
