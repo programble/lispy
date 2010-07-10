@@ -10,7 +10,7 @@ Features
 Documentation
 -------------
 
- * Document Python Core functions
+ * <del>Document Python Core functions</del>
  * Document Lisp Core functions
  * Document syntax
    * Lambda argument syntax (`?` `&`)
