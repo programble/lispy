@@ -155,8 +155,10 @@ class Lambda:
             # Rest argument
             elif self.bindings.data[bi] == Symbol('&'):
                 if ai == len(args):
-                    raise TypeError("expected at least %d arguments, got %d" % (bi + 1, ai))
-                local[self.bindings.data[bi+1].data] = List([x.evaluate(scope) for x in args[ai:]] + [[]])
+                    #raise TypeError("expected at least %d arguments, got %d" % (bi + 1, ai))
+                    local[self.bindings.data[bi+1].data] = List([])
+                else:
+                    local[self.bindings.data[bi+1].data] = List([x.evaluate(scope) for x in args[ai:]] + [[]])
                 break
             # Normal argument
             else:
@@ -183,18 +185,21 @@ class Macro(Lambda):
         while bi != len(self.bindings.data) and ai != len(self.bindings.data):
             # Optional argument
             if self.bindings.data[bi] == Symbol('?'):
-                if ai == len(args):
+                if ai >= len(args):
                     # Nothing supplied for this optional
                     local[self.bindings.data[bi+1].data] = List([])
-                    break
+                    ai -= 1
+                    bi += 1
                 else:
                     bi += 1
                     continue
             # Rest argument
             elif self.bindings.data[bi] == Symbol('&'):
                 if ai == len(args):
-                    raise TypeError("expected at least %d arguments, got %d" % (bi + 1, ai))
-                local[self.bindings.data[bi+1].data] = List(list(args[ai:]) + [[]])
+                    #raise TypeError("expected at least %d arguments, got %d" % (bi + 1, ai))
+                    local[self.bindings.data[bi+1].data] = List([])
+                else:
+                    local[self.bindings.data[bi+1].data] = List(list(args[ai:]) + [[]])
                 break
             # Normal argument
             else:
