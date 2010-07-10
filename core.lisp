@@ -221,3 +221,10 @@
 
 (defn dissoc (alist key)
   (filter (fn (x) (not= (car x) key)) alist))
+
+;; String related functions
+
+(defn str-to-list (str)
+  (if (= str "")
+    nil
+    (cons (car str) (str-to-list (cdr str)))))
