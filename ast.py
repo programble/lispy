@@ -144,10 +144,11 @@ class Lambda:
         while bi != len(self.bindings.data) and ai != len(self.bindings.data):
             # Optional argument
             if self.bindings.data[bi] == Symbol('?'):
-                if ai == len(args):
+                if ai >= len(args):
                     # Nothing supplied for this optional
                     local[self.bindings.data[bi+1].data] = List([])
-                    break
+                    ai -= 1
+                    bi += 1
                 else:
                     bi += 1
                     continue
@@ -160,7 +161,7 @@ class Lambda:
             # Normal argument
             else:
                 # Too many or too few arguments
-                if bi == len(self.bindings.data) or ai == len(args):
+                if bi >= len(self.bindings.data) or ai >= len(args):
                     raise TypeError("expected %d arguments, got %d" % (len(self.bindings.data), len(args)))
                 local[self.bindings.data[bi].data] = args[ai].evaluate(scope)
             ai += 1
