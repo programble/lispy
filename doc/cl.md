@@ -52,3 +52,25 @@ symbol and returns its value.
 
 `set!` changes the bound value of a symbol and returns its previous
 value. `unset!` unbinds a symbol and returns its value.
+
+Argument Syntax
+---------------
+
+The `&rest` equivalent in Lispy is `&`.
+
+CL:
+    (defun foo (x &rest y) y)
+Lispy:
+    (defn foo (x & y) y)
+
+The `&optional` equivalent in Lispy is `?`.
+
+CL:
+    (defun foo (x &optional y) y)
+Lispy:
+    (defn foo (x ? y) y)
+
+Notes
+-----
+
+Lispy doesn't yell all the time like CL does.
