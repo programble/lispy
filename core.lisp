@@ -202,6 +202,13 @@
     xs
     (cons (car xs) (cons x (interpose x (cdr xs))))))
 
+(defn uniq (xs ? u)
+  (if (nil? xs)
+    u
+    (if (contains? u (car xs))
+      (uniq (cdr xs) u)
+      (uniq (cdr xs) (cons (car xs) u)))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
