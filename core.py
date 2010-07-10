@@ -270,6 +270,14 @@ def str_(scope, *x):
     return String(acc)
 scope["str"] = str_
 
+def chr_(scope, x):
+    return Character(chr(x.evaluate(scope).data))
+scope["chr"] = chr_
+
+def ord_(scope, x):
+    return Number(ord(x.evaluate(scope).data))
+scope["ord"] = ord_
+
 # Stream functions
 
 scope["*standard-output*"] = sys.stdout
