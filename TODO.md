@@ -29,7 +29,7 @@ AST
  * Do something to improve recursion
  * <del>Prevent new scopes being created on recursion</del>
  * <del>Allow `&` arguments to accept nothing</del>
- * Allow optional arguments to have default values
+ * <del>Allow optional arguments to have default values</del>
 
 Python Core
 -----------

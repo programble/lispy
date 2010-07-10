@@ -145,13 +145,22 @@ class Lambda:
             # Optional argument
             if self.bindings.data[bi] == Symbol('?'):
                 if ai >= len(args):
-                    # Nothing supplied for this optional
-                    local[self.bindings.data[bi+1].data] = List([])
+                    if self.bindings.data[bi+1].__class__ == List:
+                        # A default value is supplied
+                        local[self.bindings.data[bi+1].car().data] = self.bindings.data[bi+1].cdr().car().evaluate(scope)
+                    else:
+                        # Nothing supplied for this optional and no default value
+                        local[self.bindings.data[bi+1].data] = List([])
                     ai -= 1
                     bi += 1
                 else:
+                    if self.bindings.data[bi+1].__class__ == List:
+                        # A default value is supplied, replace with just the symbol
+                        local[self.bindings.data[bi+1].car().data] = args[ai].evaluate(scope)
+                    else:
+                        local[self.bindings.data[bi+1].data] = args[ai].evaluate(scope)
                     bi += 1
-                    continue
+                    #continue
             # Rest argument
             elif self.bindings.data[bi] == Symbol('&'):
                 if ai == len(args):
@@ -186,13 +195,22 @@ class Macro(Lambda):
             # Optional argument
             if self.bindings.data[bi] == Symbol('?'):
                 if ai >= len(args):
-                    # Nothing supplied for this optional
-                    local[self.bindings.data[bi+1].data] = List([])
+                    if self.bindings.data[bi+1].__class__ == List:
+                        # A default value is supplied
+                        local[self.bindings.data[bi+1].car().data] = self.bindings.data[bi+1].cdr().car()
+                    else:
+                        # Nothing supplied for this optional and no default value
+                        local[self.bindings.data[bi+1].data] = List([])
                     ai -= 1
                     bi += 1
                 else:
+                    if self.bindings.data[bi+1].__class__ == List:
+                        # A default value is supplied, replace with just the symbol
+                        local[self.bindings.data[bi+1].car().data] = args[ai]
+                    else:
+                        local[self.bindings.data[bi+1].data] = args[ai]
                     bi += 1
-                    continue
+                    #continue
             # Rest argument
             elif self.bindings.data[bi] == Symbol('&'):
                 if ai == len(args):
