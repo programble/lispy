@@ -251,6 +251,8 @@ def macroexpand(scope, x):
     return x
 scope["macroexpand"] = macroexpand
 
+# String functions
+
 def format(scope, s, *a):
     s = s.evaluate(scope).data
     a = [x.evaluate(scope).data for x in a]
@@ -260,6 +262,13 @@ scope["format"] = format
 def repr_(scope, x):
     return String(repr(x.evaluate(scope)))
 scope["repr"] = repr_
+
+def str_(scope, *x):
+    acc = ''
+    for i in x:
+        acc += str(i.evaluate(scope))
+    return String(acc)
+scope["str"] = str_
 
 # Stream functions
 
