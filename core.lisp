@@ -197,6 +197,11 @@
 (defmacro for (binding body) 
   `(map (fn (,(car binding)) ,body) ,(cadr binding)))
 
+(defn interpose (x xs)
+  (if (nil? (cdr xs))
+    xs
+    (cons (car xs) (cons x (interpose x (cdr xs))))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
