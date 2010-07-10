@@ -41,3 +41,9 @@ Clojure:
     (next [1 2 3])
 Lispy:
     (cdr '(1 2 3))
+
+nil
+---
+
+In Lispy, as in CL, `nil` is an empty list. An empty list is
+`nil`. There is no distinction between the two like in Clojure.
