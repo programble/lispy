@@ -37,7 +37,7 @@ Python Core
 Lisp Core
 ---------
 
- * Fix `reduce` somehow (does not work for `t`/`nil` stuff)
+ * <del>Fix `reduce` somehow (does not work for `t`/`nil` stuff)</del>
  * Fix `reverse` (possibly a problem in `append`)
 
 Scope
