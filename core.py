@@ -284,8 +284,19 @@ scope["*standard-output*"] = sys.stdout
 scope["*standard-error*"] = sys.stderr
 scope["*standard-input*"] = sys.stdin
 scope["*out*"] = sys.stdout
+scope["*in*"] = sys.stdin
 
 def print_(scope, x):
     scope["*out*"].write(str(x.evaluate(scope)))
     return nil
 scope["print"] = print_
+
+def read_line(scope):
+    s = ""
+    while True:
+        c = scope["*in*"].read(1)
+        if c == '\n':
+            break
+        s += c
+    return String(s)
+scope["read-line"] = read_line
