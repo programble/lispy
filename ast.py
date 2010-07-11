@@ -147,7 +147,7 @@ class Lambda:
                 if ai >= len(args):
                     if self.bindings.data[bi+1].__class__ == List:
                         # A default value is supplied
-                        local[self.bindings.data[bi+1].car().data] = self.bindings.data[bi+1].cdr().car().evaluate(scope)
+                        local[self.bindings.data[bi+1].car().data] = self.bindings.data[bi+1].cdr().car().evaluate(local)
                     else:
                         # Nothing supplied for this optional and no default value
                         local[self.bindings.data[bi+1].data] = List([])
