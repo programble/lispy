@@ -191,48 +191,47 @@ class Lambda:
 
 class Macro(Lambda):
     def __call__(self, scope, *args):
-        self.bindings.data = self.bindings.data[:-1] # HACK
         # Create a new function-local scope
         local = Scope(scope)
         # Bind each argument to a binding
+        bindings = self.bindings.data[:-1]
         bi = ai = 0
-        while bi != len(self.bindings.data) and ai != len(self.bindings.data):
+        while bi != len(bindings) and ai != len(bindings):
             # Optional argument
-            if self.bindings.data[bi] == Symbol('?'):
+            if bindings[bi] == Symbol('?'):
                 if ai >= len(args):
-                    if self.bindings.data[bi+1].__class__ == List:
+                    if bindings[bi+1].__class__ == List:
                         # A default value is supplied
-                        local[self.bindings.data[bi+1].car().data] = self.bindings.data[bi+1].cdr().car()
+                        local[bindings[bi+1].car().data] = bindings[bi+1].cdr().car()
                     else:
                         # Nothing supplied for this optional and no default value
-                        local[self.bindings.data[bi+1].data] = List([])
+                        local[bindings[bi+1].data] = List([])
                     ai -= 1
                     bi += 1
                 else:
-                    if self.bindings.data[bi+1].__class__ == List:
+                    if bindings[bi+1].__class__ == List:
                         # A default value is supplied, replace with just the symbol
-                        local[self.bindings.data[bi+1].car().data] = args[ai]
+                        local[bindings[bi+1].car().data] = args[ai]
                     else:
-                        local[self.bindings.data[bi+1].data] = args[ai]
+                        local[bindings[bi+1].data] = args[ai]
                     bi += 1
                     #continue
             # Rest argument
-            elif self.bindings.data[bi] == Symbol('&'):
+            elif bindings[bi] == Symbol('&'):
                 if ai == len(args):
                     #raise TypeError("expected at least %d arguments, got %d" % (bi + 1, ai))
-                    local[self.bindings.data[bi+1].data] = List([])
+                    local[bindings[bi+1].data] = List([])
                 else:
-                    local[self.bindings.data[bi+1].data] = List(list(args[ai:]) + [[]])
+                    local[bindings[bi+1].data] = List(list(args[ai:]) + [[]])
                 break
             # Normal argument
             else:
                 # Too many or too few arguments
-                if bi == len(self.bindings.data) or ai == len(args):
-                    raise TypeError("expected %d arguments, got %d" % (len(self.bindings.data), len(args)))
-                local[self.bindings.data[bi].data] = args[ai]
+                if bi == len(bindings) or ai == len(args):
+                    raise TypeError("expected %d arguments, got %d" % (len(bindings), len(args)))
+                local[bindings[bi].data] = args[ai]
             ai += 1
             bi += 1
-        self.bindings.data.append([]) # HACK
         # Evaluate each expression in the body (in local function scope)
         for expression in self.body[:-1]:
             expression.evaluate(local)
