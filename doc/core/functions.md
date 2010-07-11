@@ -394,3 +394,33 @@ Writes `string` to the stream `*out*` is bound to. Always evaluates to
     => (print "foobar\n")
     foobar
     nil
+
+### str
+
+    (str & stuff)
+
+Stringifies all arguments and joins them together into one string. Can
+be used for string concatenation.
+
+    => (str 16 " sheep")
+    "16 sheep"
+    => (str)
+    ""
+
+### chr
+
+    (chr x)
+
+Converts the number `x` into a character of the same ASCII value.
+
+    => (chr 97)
+    \a
+
+### ord
+
+    (ord c)
+
+Converts the character `c` into a number of its ASCII value.
+
+    => (ord \a)
+    97
