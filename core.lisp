@@ -1,3 +1,4 @@
+;; -*- mode: clojure -*-
 ;; Copyright 2010 Curtis McEnroe <programble@gmail.com>
 ;; Licensed under the GNU GPLv3
 
@@ -235,3 +236,8 @@
   (if (= str "")
     nil
     (cons (car str) (str-to-list (cdr str)))))
+
+;; Functions that make functions
+
+(defn constantly (x)
+  (fn (& _) x))
