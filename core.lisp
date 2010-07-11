@@ -44,8 +44,8 @@
 (defn identity (x) x)
 
 ;; Reduce
-(defn reduce (f xs ? x)
-  (if (nil? x)
+(defn reduce (f xs ? (x :not-supplied))
+  (if (= x :not-supplied)
     (reduce f (cdr xs) (car xs))
     (if (nil? xs)
       x
