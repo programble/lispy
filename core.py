@@ -122,7 +122,7 @@ def unset(scope, symbol):
 scope["unset!"] = unset
 
 def fn(scope, names, *body):
-    l = Lambda(names, body)
+    l = Lambda(scope, names, body)
     l.meta = names.meta
     return l
 scope["fn"] = fn
@@ -150,7 +150,7 @@ def syntax_quote(scope, expr):
 scope["syntax-quote"] = syntax_quote
 
 def macro(scope, names, *body):
-    m = Macro(names, body)
+    m = Macro(scope, names, body)
     m.meta = names.meta
     return m
 scope["macro"] = macro

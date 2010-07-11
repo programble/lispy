@@ -121,9 +121,10 @@ class String(List):
         return self
 
 class Lambda:
-    def __init__(self, bindings, body):
+    def __init__(self, scope, bindings, body):
         self.bindings = bindings
         self.body = body
+        self.scope = scope
         self.meta = {"name": None}
 
     def evaluate(self, scope):
@@ -135,8 +136,13 @@ class Lambda:
             # This is recursion, don't create a new scope
             local = scope
         else:
+            # Calling scope -> creating scope -> local scope
+            # Clone creation scope so its parent can be set to calling scope
+            creation = Scope()
+            creation.bindings = self.scope.bindings
+            creation.parent = scope
             # Create a new scope
-            local = Scope(scope)
+            local = Scope(creation)
         # Bind `recur` to self (to alow for recursion from anonymous functions)
         local["recur"] = self
         # Bind each argument to a binding
