@@ -304,3 +304,53 @@ def read_line(scope):
         s += c
     return String(s)
 scope["read-line"] = read_line
+
+# Type predicates
+
+def listp(scope, x):
+    if x.evaluate(scope).__class__ == List:
+        return t
+    return nil
+scope["list?"] = listp
+
+def numberp(scope, x):
+    if x.evaluate(scope).__class__ == Number:
+        return t
+    return nil
+scope["number?"] = numberp
+
+def characterp(scope, x):
+    if x.evaluate(scope).__class__ == Character:
+        return t
+    return nil
+scope["character?"] = characterp
+
+def symbolp(scope, x):
+    if x.evaluate(scope).__class__ == Symbol:
+        return t
+    return nil
+scope["symbol?"] = symbolp
+
+def keywordp(scope, x):
+    if x.evaluate(scope).__class__ == Keyword:
+        return t
+    return nil
+scope["keyword?"] = keywordp
+
+def stringp(scope, x):
+    if x.evaluate(scope).__class__ == String:
+        return t
+    return nil
+scope["string?"] = stringp
+
+def fnp(scope, x):
+    if x.evaluate(scope).__class__ == Lambda:
+        return t
+    return nil
+scope["fn?"] = fnp
+
+def macrop(scope, x):
+    if x.evaluate(scope).__class__ == Macro:
+        return t
+    return nil
+scope["macro?"] = macrop
