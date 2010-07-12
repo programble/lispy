@@ -395,6 +395,16 @@ Writes `string` to the stream `*out*` is bound to. Always evaluates to
     foobar
     nil
 
+### read-line
+
+    (read-line)
+
+Reads a line from the stream `*in*` is bound to.
+
+    => (read-line)
+    foobar
+    "foobar"
+    
 ### str
 
     (str & stuff)
@@ -424,3 +434,51 @@ Converts the character `c` into a number of its ASCII value.
 
     => (ord \a)
     97
+
+### list?
+
+    (list? x)
+
+Evaluates to `t` if `x` is a list.
+
+### number?
+
+    (number? x)
+
+Evaluates to `t` if `x` is a number.
+
+### character?
+
+    (character? x)
+
+Evaluates to `t` if `x` is a character.
+
+### symbol?
+
+    (symbol? x)
+
+Evaluates to `t` if `x` is a symbol.
+
+### keyword?
+
+    (keyword? x)
+
+Evaluates to `t` if `x` is a keyword.
+
+### string?
+
+    (string? x)
+
+Evaluates to `t` if `x` is a string.
+
+### fn?
+
+    (fn? x)
+
+Evaluates to `t` if `x` is a `fn`.
+
+### macro?
+
+    (macro? x)
+
+Evaluates to `t` if `x` is a macro.
