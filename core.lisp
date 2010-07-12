@@ -77,6 +77,12 @@
   `(let ,(for (binding bindings) `(,(car binding) (fn ,(cadr binding) ,@(cddr binding))))
      ,@body))
 
+;; Condp
+(defmacro condp (pred expr & clauses)
+  `(cond
+    ,@(for (clause clauses)
+        `((,pred ,expr ,(car clause)) ,(cadr clause)))))
+
 ;; Stream functions
 (defmacro printf (s & a) `(print (format ,s ,@a)))
 (defmacro println (s) `(printf "%s\n" ,s))
