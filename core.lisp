@@ -227,6 +227,13 @@
 (defn improper? (xs)
   (not (proper? xs)))
 
+(defn range (min ? max)
+  (if (nil? max)
+    (range 0 min)
+    (if (= min max)
+      nil
+      (cons min (range (inc min) max)))))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
