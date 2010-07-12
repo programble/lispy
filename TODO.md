@@ -36,13 +36,13 @@ AST
 Python Core
 -----------
 
- * Type predicates (`list?`, `macro?`, etc)
+ * <del>Type predicates (`list?`, `macro?`, etc)</del>
 
 Lisp Core
 ---------
 
  * <del>Fix `reduce` somehow (does not work for `t`/`nil` stuff)</del>
- * Fix `reverse` (possibly a problem in `append`)
+ * <del>Fix `reverse` (possibly a problem in `append`)</del>
 
 Scope
 -----
