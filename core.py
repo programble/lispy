@@ -21,6 +21,8 @@ scope["nil"] = nil
 
 # Lispy information
 scope["*lispy-version*"] = List([Number(0), Number(2), Number(0), []])
+scope["*lispy-version-head*"] = t
+scope["*repl*"] = nil
 
 # Core core functions
 

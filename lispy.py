@@ -13,8 +13,6 @@ except ImportError:
 from reader import Reader
 import core
 
-__version__ = "0.2.0"
-
 def load_lisp_core(filename="core.lisp"):
     # Load up and evaluate core.lisp
     f = open(filename)
@@ -26,7 +24,6 @@ def load_lisp_core(filename="core.lisp"):
 def repl():
     global EOFError
     # REPL Banner
-    version()
     
     source = ""
     while True:
@@ -90,9 +87,6 @@ def evaluate_file(filename):
         except Exception, e:
             traceback.print_exc()
             return
-
-def version():
-    print "Lispy", __version__
         
 def help():
     print "Usage: %s [options] file" % sys.argv[0]
@@ -129,6 +123,7 @@ def main(argv):
             evaluate(arg)
             sys.exit()
         elif opt in ("-r", "--repl"):
+            core.scope["*repl*"] = core.t
             if load_core:
                 load_lisp_core(core_filename)
             repl()
@@ -139,14 +134,16 @@ def main(argv):
         elif opt in ("-h", "--help"):
             help()
             sys.exit()
-
-    if load_core:
-        load_lisp_core(core_filename)
     
     # If not given a file to evaluate, start an REPL
     if len(args) == 0:
+        core.scope["*repl*"] = core.t
+        if load_core:
+            load_lisp_core(core_filename)
         repl()
     else:
+        if load_core:
+            load_lisp_core(core_filename)
         evaluate_file(args[0])
 
 if __name__ == "__main__":

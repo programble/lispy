@@ -28,7 +28,9 @@
 
 ;; Version as string
 (defn lispy-version ()
-  (format "Lispy %d.%d.%d" (car *lispy-version*) (cadr *lispy-version*) (caddr *lispy-version*)))
+  (if *lispy-version-head*
+    (format "Lispy %d.%d.%d-HEAD" (car *lispy-version*) (cadr *lispy-version*) (caddr *lispy-version*))
+    (format "Lispy %d.%d.%d" (car *lispy-version*) (cadr *lispy-version*) (caddr *lispy-version*))))
 
 ;; Predicates
 (defn nil? (x)
@@ -241,3 +243,7 @@
 
 (defn constantly (x)
   (fn (& _) x))
+
+;; Repl start up code
+(when *repl*
+  (println (lispy-version)))
