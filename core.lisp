@@ -204,7 +204,7 @@
     (cons (car xs) (cons x (interpose x (cdr xs))))))
 
 (defn unique (xs)
-  (reduce (fn (acc x) (if (contains? acc x) acc (cons x acc))) xs))
+  (reduce (fn (acc x) (if (contains? acc x) acc (cons x acc))) xs nil))
 
 ;; Association list related functions
 (defn keys (alist)
