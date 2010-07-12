@@ -21,7 +21,9 @@ scope["nil"] = nil
 
 # Lispy information
 scope["*lispy-version*"] = List([Number(0), Number(2), Number(0), []])
+# Set to nil for releases
 scope["*lispy-version-head*"] = t
+# REPLs should set this to t
 scope["*repl*"] = nil
 
 # Core core functions
