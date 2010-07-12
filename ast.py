@@ -131,17 +131,17 @@ class Lambda:
         return self
 
     def __call__(self, scope, *args):
-        if scope.has_key("recur") and scope["recur"] == self:
+        #if scope.has_key("recur") and scope["recur"] == self:
             # This is recursion, don't create a new scope
-            local = scope
-        else:
-            # Calling scope -> creating scope -> local scope
-            # Clone creation scope so its parent can be set to calling scope
-            creation = Scope()
-            creation.bindings = self.scope.bindings
-            creation.parent = scope
-            # Create a new scope
-            local = Scope(creation)
+            #local = scope
+        #else:
+        # Calling scope -> creating scope -> local scope
+        # Clone creation scope so its parent can be set to calling scope
+        creation = Scope()
+        creation.bindings = self.scope.bindings
+        creation.parent = scope
+        # Create a new scope
+        local = Scope(creation)
         # Bind `recur` to self (to alow for recursion from anonymous functions)
         local["recur"] = self
         # Bind each argument to a binding

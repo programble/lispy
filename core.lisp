@@ -50,8 +50,8 @@
 (defn reduce (f xs ? (x :not-supplied))
   (if (= x :not-supplied)
     (reduce f (cdr xs) (car xs))
-    (if (nil? xs)
-      x
+    (if (nil? (cdr xs))
+      (f x (car xs))
       (reduce f (cdr xs) (f x (car xs))))))
 
 ;; Filter
@@ -176,9 +176,7 @@
     (cons x (repeat (dec n) x))))
 
 (defn reverse (xs)
-  (if (nil? xs)
-    xs
-    (append (reverse (cdr xs)) (car xs))))
+  (reduce (fn (acc x) (cons x acc)) xs nil))
 
 (defn zip (xs ys)
   (if (or (nil? xs) (nil? ys))
@@ -205,12 +203,8 @@
     xs
     (cons (car xs) (cons x (interpose x (cdr xs))))))
 
-(defn uniq (xs ? u)
-  (if (nil? xs)
-    u
-    (if (contains? u (car xs))
-      (uniq (cdr xs) u)
-      (uniq (cdr xs) (cons (car xs) u)))))
+(defn unique (xs)
+  (reduce (fn (acc x) (if (contains? acc x) acc (cons x acc))) xs))
 
 ;; Association list related functions
 (defn keys (alist)
@@ -244,6 +238,6 @@
 (defn constantly (x)
   (fn (& _) x))
 
-;; Repl start up code
+;; Repl start-up
 (when *repl*
   (println (lispy-version)))
