@@ -114,3 +114,47 @@
                (test (= (repr :foo) ":foo"))
                (test (= (repr '(1 . 2)) "(1 . 2)"))
                (test (= (repr '(1 2)) "(1 2)")))
+
+(test-function str
+               (test (= (str) ""))
+               (test (= (str 1 2) "12")))
+
+(test-function chr
+               (test (= (chr 97) \a)))
+
+(test-function ord
+               (test (= (ord \a) 97)))
+
+(test-function list?
+               (test (list? '(1 2 3)))
+               (test (list? nil))
+               (test (not (list? 1))))
+
+(test-function number?
+               (test (number? 1))
+               (test (number? 2.0))
+               (test (not (number? \a))))
+
+(test-function character?
+               (test (character? \a))
+               (test (not (character? 97))))
+
+(test-function symbol?
+               (test (symbol? 'foo))
+               (test (not (symbol? nil))))
+
+(test-function keyword?
+               (test (keyword? :foo))
+               (test (not (keyword? 'foo))))
+
+(test-function string?
+               (test (string? "foo"))
+               (test (not (string? \f))))
+
+(test-function fn?
+               (test (fn? (fn () nil)))
+               (test (not (fn? test))))
+
+(test-function macro?
+               (test (macro? test))
+               (test (not (macro? (fn () nil)))))
