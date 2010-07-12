@@ -72,6 +72,11 @@
 (defmacro alter! (name func & args)
   `(set! ,name (,func ,name ,@args)))
 
+;; Letfn
+(defmacro letfn (bindings & body)
+  `(let ,(for (binding bindings) `(,(car binding) (fn ,(cadr binding) ,@(cddr binding))))
+     ,@body))
+
 ;; Stream functions
 (defmacro printf (s & a) `(print (format ,s ,@a)))
 (defmacro println (s) `(printf "%s\n" ,s))
