@@ -247,7 +247,7 @@ scope[">"] = gt
 def macroexpand(scope, x):
     while x.car().evaluate(scope).__class__ == Macro:
         m = x.car().evaluate(scope)
-        x = Lambda(m.bindings, m.body)(scope, *[List([Symbol("quote"), i, []]) for i in x.cdr().data[:-1]])
+        x = Lambda(m.scope, m.bindings, m.body)(scope, *[List([Symbol("quote"), i, []]) for i in x.cdr().data[:-1]])
     return x
 scope["macroexpand"] = macroexpand
 
