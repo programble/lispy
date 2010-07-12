@@ -30,6 +30,7 @@ AST
  * <del>Prevent new scopes being created on recursion</del>
  * <del>Allow `&` arguments to accept nothing</del>
  * <del>Allow optional arguments to have default values</del>
+ * Make all arguments after `?` optional
 
 Python Core
 -----------
