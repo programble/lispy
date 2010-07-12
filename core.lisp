@@ -132,6 +132,10 @@
   (< x 0))
 
 ;; List-related functions
+
+(defn list (& args)
+  args)
+
 (defn contains? (xs key)
   (if (nil? xs)
     nil

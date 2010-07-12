@@ -161,10 +161,6 @@ scope["macro"] = macro
 
 # Other core functions
 
-def list_(scope, *x):
-    return List([i.evaluate(scope) for i in x] + [[]])
-scope["list"] = list_
-
 def let(scope, bindings, *exprs):
     local = Scope(scope)
     for pair in bindings.data[:-1]:
