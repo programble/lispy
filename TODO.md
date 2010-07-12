@@ -6,6 +6,7 @@ Features
 
  * Python interop
  * <del>Destructive set functions (`set!`, etc)</del>
+ * Destructuring
 
 Documentation
 -------------
