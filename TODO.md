@@ -34,6 +34,8 @@ AST
 Python Core
 -----------
 
+ * Type predicates (`list?`, `macro?`, etc)
+
 Lisp Core
 ---------
 
