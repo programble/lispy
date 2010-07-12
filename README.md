@@ -27,7 +27,7 @@ Usage
       -n, --no-core             Do not load lisp core
       -c FILE, --core=FILE      Load the core from a different file
       --version                 Print version information and exit
-
+      
 ### REPL
 
 To run a Lispy REPL, either run Lispy without a filename, or run

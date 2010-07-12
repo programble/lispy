@@ -217,6 +217,12 @@
 (defn unique (xs)
   (reduce (fn (acc x) (if (contains? acc x) acc (cons x acc))) xs nil))
 
+(defn proper? (xs)
+  (list? (cdr xs)))
+
+(defn improper? (xs)
+  (not (proper? xs)))
+
 ;; Association list related functions
 (defn keys (alist)
   (map car alist))
