@@ -22,10 +22,11 @@ Usage
            lispy [options] -r
            lispy [options] -e expr
     Options:
-      -r, --repl        Start an REPL
-      -e, --evaluate    Evaluate a single expression
-      -n, --no-core     Do not load lisp core
-      --version         Print version information and exit
+      -r, --repl                Start an REPL
+      -e, --evaluate            Evaluate a single expression
+      -n, --no-core             Do not load lisp core
+      -c FILE, --core=FILE      Load the core from a different file
+      --version                 Print version information and exit
 
 ### REPL
 
