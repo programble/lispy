@@ -23,8 +23,6 @@ def load_lisp_core(filename="core.lisp"):
 
 def repl():
     global EOFError
-    # REPL Banner
-    
     source = ""
     while True:
         # Get a new source line
@@ -129,7 +127,9 @@ def main(argv):
             repl()
             sys.exit()
         elif opt == "--version":
-            version()
+            core.scope["*repl*"] = core.t
+            if load_core:
+                load_lisp_core(core_filename)
             sys.exit()
         elif opt in ("-h", "--help"):
             help()
