@@ -1,5 +1,6 @@
 Lispy
 =====
+![](http://stillmaintained.com/programble/lispy.png)
 
 Lispy is a Lisp implementation in Python. It is influenced by John
 McCarthy's paper "Recursive Functions of Symbolic Expressions and
